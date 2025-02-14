@@ -26,3 +26,20 @@ Any person can use the site; however, they must register to purchase or sell any
 ### 2. Document Revision
 
 Revision 1 14/02/2025
+
+
+### 3. Scope
+The scope of Phase 1 will be much narrower than that of the final phase. However, a few things will remain permanently out of scope.
+
+We **WILL NOT** be implementing the following:
+- An actual payment processing system.
+- Adding a review or comment system.
+- Refunds.
+- Order Tracking.
+
+
+We **WILL** be implementing the following: 
+- Customizable User Account
+- Auctions / Buy Now
+- Wishlist
+- Cart
