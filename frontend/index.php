@@ -5,8 +5,8 @@ $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 // Route to the corresponding view
 if ($requestUri === '/' || $requestUri === '/index') {
     include __DIR__ . '/views/index.html';
-} elseif ($requestUri === '/auth') {
-    include __DIR__ . '/views/auth.html';
+} elseif ($requestUri === '/login') {
+    include __DIR__ . '/views/login.html';
 } elseif ($requestUri === '/register.html') {
     include __DIR__ . '/views/register.html';
 } elseif (preg_match('#^/product/[^/]+$#', $requestUri)) {
