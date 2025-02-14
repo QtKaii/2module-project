@@ -1,22 +1,42 @@
 <html>
 <head>
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Home</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
 </head>
+<body class="bg-gray-100">
+    <nav class="bg-gray-800 p-4 text-center">
+        <a href="/" class="text-white px-2 hover:text-gray-300">Home</a>
+        <a href="/auth" class="text-white px-2 hover:text-gray-300">Login</a>
+        <a href="/auth" class="text-white px-2 hover:text-gray-300">SignUp</a>
+    </nav>
 
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Home</h1>
-                <p>Welcome to the home page.</p>
+    <section class="container mx-auto py-8 px-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white shadow-md rounded-lg p-4 hover:shadow-xl">
+                <img src="https://placehold.co/400" alt="Product Image" class="w-full h-40 object-cover rounded-t-md">
+                <h3 class="mt-4 text-xl font-semibold">Product Title 1</h3>
+                <p class="mt-2 text-gray-600">Basic product description.</p>
+                <p class="mt-2 text-blue-600 font-bold">$19.99</p>
+            </div>
+            <div class="bg-white shadow-md rounded-lg p-4 hover:shadow-xl">
+                <img src="https://placehold.co/400" alt="Product Image" class="w-full h-40 object-cover rounded-t-md">
+                <h3 class="mt-4 text-xl font-semibold">Product Title 2</h3>
+                <p class="mt-2 text-gray-600">Basic product description.</p>
+                <p class="mt-2 text-blue-600 font-bold">$29.99</p>
+            </div>
+            <div class="bg-white shadow-md rounded-lg p-4 hover:shadow-xl">
+                <img src="https://placehold.co/400" alt="Product Image" class="w-full h-40 object-cover rounded-t-md">
+                <h3 class="mt-4 text-xl font-semibold">Product Title 3</h3>
+                <p class="mt-2 text-gray-600">Basic product description.</p>
+                <p class="mt-2 text-blue-600 font-bold">$39.99</p>
+            </div>
+            <div class="bg-white shadow-md rounded-lg p-4 hover:shadow-xl">
+                <img src="https://placehold.co/400" alt="Product Image" class="w-full h-40 object-cover rounded-t-md">
+                <h3 class="mt-4 text-xl font-semibold">Product Title 4</h3>
+                <p class="mt-2 text-gray-600">Basic product description.</p>
+                <p class="mt-2 text-blue-600 font-bold">$49.99</p>
             </div>
         </div>
-    </div>
+    </section>
 </body>
-
 </html>
