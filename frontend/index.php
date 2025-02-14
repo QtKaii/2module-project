@@ -7,7 +7,7 @@ if ($requestUri === '/' || $requestUri === '/index') {
     include __DIR__ . '/views/index.html';
 } elseif ($requestUri === '/login') {
     include __DIR__ . '/views/login.html';
-} elseif ($requestUri === '/register.html') {
+} elseif ($requestUri === '/register') {
     include __DIR__ . '/views/register.html';
 } elseif (preg_match('#^/product/[^/]+$#', $requestUri)) {
     include __DIR__ . '/views/product.html';
