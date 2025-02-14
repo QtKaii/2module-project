@@ -6,10 +6,6 @@
 
 ---
 
-<div style="page-break-after: always; visibility: hidden"> 
-\pagebreak 
-</div>
-
 ## Declaration
 **WE** herby certify that this material, which I now submit for assessment on the
 programme of study leading to the award of Ordinary Degree in Computing in the
@@ -17,10 +13,6 @@ Institute of Technology Blanchardstown, is entirely my own work except where
 otherwise stated.
 
 ---
-
-<div style="page-break-after: always; visibility: hidden"> 
-\pagebreak 
-</div>
 
 # Ebaí
 #### General Public Auctioning and Seller Site
