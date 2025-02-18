@@ -38,10 +38,13 @@ We **WILL NOT** be implementing the following:
 - Refunds and cancellations.
 - Order Tracking.
 - Inventory Managment.
+- Advanced search filters.
+- Listings cannot be modified or deleted.
 
 
 We **WILL** be implementing the following: 
-- Customizable User Account
+- Customizable User Account(Buyer/Seller)
 - Auctions / Buy Now
 - Wishlist
 - Cart
+- Sorting by broad category(eg:Electronics,clothing)
