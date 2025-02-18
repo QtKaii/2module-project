@@ -34,9 +34,10 @@ The scope of Phase 1 will be much narrower than that of the final phase. However
 We **WILL NOT** be implementing the following:
 - An actual payment processing system.
 - Adding a review or comment system.
-- Refunds and cancellations 
+- Account recovery.
+- Refunds and cancellations.
 - Order Tracking.
-- Inventory Managment
+- Inventory Managment.
 
 
 We **WILL** be implementing the following: 
