@@ -9,6 +9,10 @@ if ($requestUri === '/' || $requestUri === '/index') {
     include __DIR__ . '/views/login.html';
 } elseif ($requestUri === '/register') {
     include __DIR__ . '/views/register.html';
+} elseif ($requestUri === '/cart') {
+    include __DIR__ . '/views/cart.html';
+} elseif ($requestUri === '/wishlist') {
+    include __DIR__ . '/views/wishlist.html';
 } elseif (preg_match('#^/product/[^/]+$#', $requestUri)) {
     include __DIR__ . '/views/product.html';
 } else {
