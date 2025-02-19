@@ -5,13 +5,14 @@ This guide will help you set up and understand the project's templating system u
 ## Setting Up Composer
 
 1. **Install Composer**
-   - **Windows**: 
+   - **Windows**:
      1. Download the Composer installer from [getcomposer.org](https://getcomposer.org/download/)
      2. Run the installer (composer-setup.exe)
      3. Follow the installation wizard
      4. Verify installation by opening Command Prompt and typing: `composer --version`
 
    - **Mac/Linux**:
+
      ```bash
      php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
      php composer-setup.php
@@ -20,6 +21,7 @@ This guide will help you set up and understand the project's templating system u
      ```
 
 2. **Install Project Dependencies**
+
    ```bash
    cd frontend
    composer install
@@ -27,7 +29,7 @@ This guide will help you set up and understand the project's templating system u
 
 ## Project Structure
 
-```
+```txt
 frontend/
 ├── templates/              # Twig template files
 │   ├── base.html.twig     # Base template that others extend
@@ -47,6 +49,7 @@ frontend/
 ## Using Twig Templates
 
 1. **Extending Base Template**
+
    ```twig
    {% extends 'base.html.twig' %}
    
@@ -58,6 +61,7 @@ frontend/
    ```
 
 2. **Including Components**
+
    ```twig
    {# Include a navigation component #}
    {% include 'components/nav.html.twig' %}
@@ -71,6 +75,7 @@ frontend/
    ```
 
 3. **Using Variables**
+
    ```twig
    <h1>{{ page_title }}</h1>
    
@@ -84,6 +89,7 @@ frontend/
 The `index.php` file serves as the main entry point and handles:
 
 1. **Setup**
+
    ```php
    // Load Composer dependencies
    require_once __DIR__ . '/vendor/autoload.php';
@@ -102,6 +108,7 @@ The `index.php` file serves as the main entry point and handles:
 
 3. **Data Handling**
    - Passes data to templates:
+
      ```php
      echo $twig->render('pages/index.html.twig', [
          'current_page' => 'home',
@@ -116,6 +123,7 @@ The `index.php` file serves as the main entry point and handles:
 ## Running the Project
 
 1. Start the PHP development server:
+
    ```bash
    cd frontend
    php -S localhost:3000
@@ -133,6 +141,7 @@ The `index.php` file serves as the main entry point and handles:
 2. **Creating a New Component**
    1. Add a new .html.twig file in `templates/components/`
    2. Include it in your pages using:
+
       ```twig
       {% include 'components/your-component.html.twig' with {
           'param1': 'value1'
