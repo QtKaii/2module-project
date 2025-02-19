@@ -2,7 +2,7 @@
     <a href="/product/{{ product.id }}">
         <img src="{{ product.image|default('https://placehold.co/400') }}" 
              alt="{{ product.title }}" 
-             class="w-full h-40 object-cover rounded-t-md">
+             class="w-80 h-80 object-contain rounded-t-md">
     </a>
     <h3 class="mt-4 text-xl font-semibold">{{ product.title }}</h3>
     <p class="mt-2 text-gray-600">{{ product.description }}</p>

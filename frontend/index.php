@@ -31,10 +31,10 @@ $path = parse_url($request, PHP_URL_PATH);
 
 // Sample product data (in real app, this would come from a database)
 $products = [
-    ['id' => 1, 'title' => 'Vintage Camera - As Is', 'description' => 'Old camera, untested. Sold as is.', 'price' => '45.50'],
-    ['id' => 2, 'title' => 'Antique Pocket Watch', 'description' => 'A beautiful antique pocket watch. Minor wear.', 'price' => '120.00'],
-    ['id' => 3, 'title' => 'Retro Video Game Console', 'description' => 'Classic console with one controller. Some scratches.', 'price' => '75.00'],
-    ['id' => 4, 'title' => 'Collectible Coin Set', 'description' => 'Rare coin set in protective case. Great condition.', 'price' => '250.00'],
+    ['id' => 1, 'title' => 'Vintage Camera - As Is', 'description' => 'Old camera, untested. Sold as is.', 'price' => '45.50', 'image' => '/images/vintage.jpg'],
+    ['id' => 2, 'title' => 'Antique Pocket Watch', 'description' => 'A beautiful antique pocket watch. Minor wear.', 'price' => '120.00', 'image' => '/images/pocketwatch.jpg'],
+    ['id' => 3, 'title' => 'Retro NES Video Game Console', 'description' => 'Classic NES with one controller. Some scratches.', 'price' => '75.00', 'image' => '/images/retro.jpg'],
+    ['id' => 4, 'title' => 'Collectible Coin Set', 'description' => 'Rare coin set in protective case. Great condition.', 'price' => '250.00', 'image' => '/images/coins.jpg'],
 ];
 
 try {
