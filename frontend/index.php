@@ -31,10 +31,10 @@ $path = parse_url($request, PHP_URL_PATH);
 
 // Sample product data (in real app, this would come from a database)
 $products = [
-    ['id' => 1, 'title' => 'Product Title 1', 'description' => 'Basic product description.', 'price' => '19.99'],
-    ['id' => 2, 'title' => 'Product Title 2', 'description' => 'Basic product description.', 'price' => '29.99'],
-    ['id' => 3, 'title' => 'Product Title 3', 'description' => 'Basic product description.', 'price' => '39.99'],
-    ['id' => 4, 'title' => 'Product Title 4', 'description' => 'Basic product description.', 'price' => '49.99'],
+    ['id' => 1, 'title' => 'Vintage Camera - As Is', 'description' => 'Old camera, untested. Sold as is.', 'price' => '45.50'],
+    ['id' => 2, 'title' => 'Antique Pocket Watch', 'description' => 'A beautiful antique pocket watch. Minor wear.', 'price' => '120.00'],
+    ['id' => 3, 'title' => 'Retro Video Game Console', 'description' => 'Classic console with one controller. Some scratches.', 'price' => '75.00'],
+    ['id' => 4, 'title' => 'Collectible Coin Set', 'description' => 'Rare coin set in protective case. Great condition.', 'price' => '250.00'],
 ];
 
 try {
