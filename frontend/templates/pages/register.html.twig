@@ -36,6 +36,13 @@
             'context': 'register'
         } %}
 
+        {% include 'components/form-input.html.twig' with {
+            'name': 'seller-toggle',
+            'label': 'Are you a seller?',
+            'type': 'toggle',
+            'required': true
+        } %}
+
         <div class="text-sm">
             <a href="/login" class="font-semibold text-indigo-600 hover:text-indigo-500">
                 Already have an account? Sign in

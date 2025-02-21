@@ -47,6 +47,16 @@ try {
                 'products' => $products
             ]);
             break;
+        case '/cart':
+            echo $twig->render('pages/cart.html.twig', [
+                'current_page' => 'cart'
+            ]);
+            break;
+        case '/wishlist':
+            echo $twig->render('pages/wishlist.html.twig', [
+                'current_page' => 'wishlist'
+            ]);
+            break;
 
         case '/login':
             echo $twig->render('pages/login.html.twig', [
