@@ -51,4 +51,55 @@ We **WILL** be implementing the following:
 
 
 ### 4. Walkthrough Scenarion
+<<<<<<< Updated upstream
 A user clicks a link to site. They arrives at the index page which display a nav bar on top and products on sale. The nav bar has three four links to the the home page, login page, register page and cart. The order see a tile of a product he wishes to buy. They click on it and is taken to the product details page. He sees the product image, description and price. There is a add-to-cart and wishlist button. They click the add to cart button and click on the cart tab. The
+=======
+A user clicks a link to site. They arrives at the index page which display a nav bar on top and products on sale. The nav bar has three four links to the the home page, login page, register page and cart. The order see a tile of a product he wishes to buy. They click on it and is taken to the product details page. He sees the product image, description and price. There is a add-to-cart and wishlist button. They click the add to cart button and click on the cart tab. They are taken to the cart page with a list of items in their cart. They click the order button are take to a page that summarises their order. 
+
+## 5. Software Requirements Analysis
+
+### 5.1 User Requirements
+In order to sell or buy the user needs an account.
+#### 5.1.1 Login
+- Username
+- Password
+#### 5.1.2 Register
+- Name
+- DOB
+- Email
+- Password
+- User or Buyer
+### 5.2 System Requirements
+- DB(MySQL)
+- PHP
+- HTML
+- Twig
+### 5.3 Non-functional Requirements
+- 404 error page
+- Order Summary page
+- CSS
+- Tailwind CSS
+
+
+### 6 Graphical User Interface Design
+
+## Product page
+![alt text](img/image.png)
+
+## Login/Register Page
+![alt text](img/image2.png)
+## Index Page
+![alt text](img/image3.png)
+
+
+### 7. Technical Requirements and Feasibility
+- Databases to record products and user information
+- PHP to interact with the database using CURD
+- HTML for structure
+- Tailwind CSS for styling
+- Twig for templating
+
+
+### 8. Conclusion
+
+>>>>>>> Stashed changes
