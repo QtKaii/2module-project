@@ -51,9 +51,6 @@ We **WILL** be implementing the following:
 
 
 ### 4. Walkthrough Scenarion
-<<<<<<< Updated upstream
-A user clicks a link to site. They arrives at the index page which display a nav bar on top and products on sale. The nav bar has three four links to the the home page, login page, register page and cart. The order see a tile of a product he wishes to buy. They click on it and is taken to the product details page. He sees the product image, description and price. There is a add-to-cart and wishlist button. They click the add to cart button and click on the cart tab. The
-=======
 A user clicks a link to site. They arrives at the index page which display a nav bar on top and products on sale. The nav bar has three four links to the the home page, login page, register page and cart. The order see a tile of a product he wishes to buy. They click on it and is taken to the product details page. He sees the product image, description and price. There is a add-to-cart and wishlist button. They click the add to cart button and click on the cart tab. They are taken to the cart page with a list of items in their cart. They click the order button are take to a page that summarises their order. 
 
 ## 5. Software Requirements Analysis
@@ -83,12 +80,12 @@ In order to sell or buy the user needs an account.
 
 ### 6 Graphical User Interface Design
 
-## Product page
+#### Product page
 ![alt text](img/image.png)
 
-## Login/Register Page
+### #Login/Register Page
 ![alt text](img/image2.png)
-## Index Page
+#### Index Page
 ![alt text](img/image3.png)
 
 
@@ -102,4 +99,3 @@ In order to sell or buy the user needs an account.
 
 ### 8. Conclusion
 
->>>>>>> Stashed changes
