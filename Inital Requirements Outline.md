@@ -48,3 +48,7 @@ We **WILL** be implementing the following:
 - Wishlist
 - Cart
 - Sorting by broad category(eg:Electronics,clothing)
+
+
+### 4. Walkthrough Scenarion
+A user clicks a link to site. They arrives at the index page which display a nav bar on top and products on sale. The nav bar has three four links to the the home page, login page, register page and cart. The order see a tile of a product he wishes to buy. They click on it and is taken to the product details page. He sees the product image, description and price. There is a add-to-cart and wishlist button. They click the add to cart button and click on the cart tab. The
