@@ -1,0 +1,28 @@
+<div class="mb-4">
+    <input 
+        type="{{ type|default('text') }}"
+        name="{{ name }}"
+        id="{{ name }}"
+        placeholder="{{ placeholder|default('') }}"
+        {% if required|default(false) %}required{% endif %}
+        class="block w-full rounded-md border-2 border-purple-500 bg-gray-100 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-purple-600 sm:text-sm/6"
+        {% if value is defined %}value="{{ value }}"{% endif %}
+        {% if pattern is defined %}pattern="{{ pattern }}"{% endif %}
+        autocomplete="{% if type == 'password' %}
+            {%- if name == 'password_confirm' or context == 'register' -%}
+                new-password
+            {%- else -%}
+                current-password
+            {%- endif -%}
+        {% elseif type == 'email' %}
+            email
+        {% elseif name == 'username' %}
+            username
+        {% else %}
+            off
+        {% endif %}"
+    >
+    {% if error is defined and error %}
+        <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+    {% endif %}
+</div>

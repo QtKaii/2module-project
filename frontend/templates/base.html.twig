@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-100">
+    {% include 'components/nav.html.twig' with {'current_page': current_page|default('')} %}
+    
+    {% block content %}{% endblock %}
+</body>
+</html>
