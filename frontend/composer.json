@@ -1,0 +1,7 @@
+{
+    "name": "module/frontend",
+    "description": "Frontend for module project",
+    "require": {
+        "twig/twig": "3.7"
+    }
+}

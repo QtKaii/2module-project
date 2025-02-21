@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Wishlist{% endblock %}
+
+{% block content %}
+    <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+        <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+            <div class="mx-auto max-w-5xl">
+                <div class="gap-4 sm:flex sm:items-center sm:justify-between">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">My wishlist</h2>
+                </div>
+            </div>
+
+            <ul role="list" class="divide-y divide-white">
+                {% include 'components/wishlist-item.html.twig' with {
+                    'title': 'Product 1',
+                    'description': 'Pwejdcnerijcviojn'
+                } %}
+
+                {% include 'components/wishlist-item.html.twig' with {
+                    'title': 'Product 2',
+                    'description': 'Pwejdcnerijcviojn'
+                } %}
+
+                {% include 'components/wishlist-item.html.twig' with {
+                    'title': 'Product 3',
+                    'description': 'Pwejdcnerijcviojn'
+                } %}
+
+                {% include 'components/wishlist-item.html.twig' with {
+                    'title': 'Product 4',
+                    'description': 'Pwejdcnerijcviojn'
+                } %}
+
+                {% include 'components/wishlist-item.html.twig' with {
+                    'title': 'Product 5',
+                    'description': 'Pwejdcnerijcviojn'
+                } %}
+
+                {% include 'components/wishlist-item.html.twig' with {
+                    'title': 'Product 6',
+                    'description': 'Pwejdcnerijcviojn'
+                } %}
+
+                {% include 'components/wishlist-item.html.twig' with {
+                    'title': 'Product 7',
+                    'description': 'Pwejdcnerijcviojn'
+                } %}
+            </ul>
+        </div>
+    </section>
+{% endblock %}
