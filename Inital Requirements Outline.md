@@ -55,6 +55,7 @@ A user clicks a link to site. They arrives at the index page which display a nav
 
 ## 5. Software Requirements Analysis
 
+<<<<<<< Updated upstream
 
 ### 5.1 User Requirements
 In order to sell or buy the user needs an account.
@@ -78,10 +79,16 @@ In order to sell or buy the user needs an account.
 - Order Summary page
 - CSS
 - Tailwind CSS
+=======
+### 5.1 User Requirements
+### 5.2 System Requirements
+### 5.3 Non-functional Requirements
+>>>>>>> Stashed changes
 
 
 ### 6 Graphical User Interface Design
 
+<<<<<<< Updated upstream
 #### Product page
 ![alt text](img/image.png)
 
@@ -101,3 +108,9 @@ In order to sell or buy the user needs an account.
 
 ### 8. Conclusion
 
+=======
+
+### 7. Technical Requirements and Feasibility
+
+### 8. Conclusion
+>>>>>>> Stashed changes
