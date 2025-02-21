@@ -1,23 +1,25 @@
 <?php
+// load required dependencies
 require_once __DIR__ . '/vendor/autoload.php';
 
+// import twig classes for templating
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-// Ensure proper content type
+// ensure proper content type
 header('Content-Type: text/html; charset=utf-8');
 
-// Error handling
+// enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Create cache directory if it doesn't exist
+// create cache directory for twig templates
 $cacheDir = __DIR__ . '/cache';
 if (!is_dir($cacheDir)) {
     mkdir($cacheDir, 0777, true);
 }
 
-// Initialize Twig
+// setup twig template engine with configuration
 $loader = new FilesystemLoader(__DIR__ . '/templates');
 $twig = new Environment($loader, [
     'cache' => $cacheDir,
@@ -25,11 +27,11 @@ $twig = new Environment($loader, [
     'debug' => true
 ]);
 
-// Simple router
+// get the current request url
 $request = $_SERVER['REQUEST_URI'];
 $path = parse_url($request, PHP_URL_PATH);
 
-// Sample product data (in real app, this would come from a database)
+// mock product data for demonstration
 $products = [
     ['id' => 1, 'title' => 'Vintage Camera - As Is', 'description' => 'Old camera, untested. Sold as is.', 'price' => '45.50', 'image' => '/images/vintage.jpg'],
     ['id' => 2, 'title' => 'Antique Pocket Watch', 'description' => 'A beautiful antique pocket watch. Minor wear.', 'price' => '120.00', 'image' => '/images/pocketwatch.jpg'],
@@ -38,66 +40,75 @@ $products = [
 ];
 
 try {
-    // Basic routing
+    // handle different page routes
     switch ($path) {
         case '/':
         case '/index':
+            // render home page with product list
             echo $twig->render('pages/index.html.twig', [
                 'current_page' => 'home',
                 'products' => $products
             ]);
             break;
         case '/cart':
+            // render shopping cart page
             echo $twig->render('pages/cart.html.twig', [
                 'current_page' => 'cart'
             ]);
             break;
         case '/wishlist':
+            // render wishlist page
             echo $twig->render('pages/wishlist.html.twig', [
                 'current_page' => 'wishlist'
             ]);
             break;
 
         case '/login':
+            // render login page
             echo $twig->render('pages/login.html.twig', [
                 'current_page' => 'login'
             ]);
             break;
 
         case '/register':
+            // render registration page
             echo $twig->render('pages/register.html.twig', [
                 'current_page' => 'register'
             ]);
             break;
 
         default:
-            // Check if it's a product page
+            // check if url matches product detail pattern
             if (preg_match('/^\/product\/(\d+)$/', $path, $matches)) {
                 $productId = (int)$matches[1];
+                // find product by id
                 $product = array_filter($products, function($p) use ($productId) {
                     return $p['id'] === $productId;
                 });
                 
                 if (!empty($product)) {
+                    // render product detail page if found
                     $product = reset($product);
                     echo $twig->render('pages/product.html.twig', [
                         'product' => $product
                     ]);
                 } else {
+                    // show 404 if product not found
                     http_response_code(404);
                     echo $twig->render('pages/404.html.twig');
                 }
             } else {
+                // show 404 for invalid routes
                 http_response_code(404);
                 echo $twig->render('pages/404.html.twig');
             }
             break;
     }
 } catch (Exception $e) {
-    // Log error
+    // log any errors that occur
     error_log($e->getMessage());
     
-    // Show error page in production, show actual error in development
+    // handle errors differently in production vs development
     if (getenv('ENVIRONMENT') === 'production') {
         http_response_code(500);
         echo $twig->render('pages/error.html.twig', [
