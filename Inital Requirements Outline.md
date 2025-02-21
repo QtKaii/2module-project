@@ -55,6 +55,7 @@ A user clicks a link to site. They arrives at the index page which display a nav
 
 ## 5. Software Requirements Analysis
 
+
 ### 5.1 User Requirements
 In order to sell or buy the user needs an account.
 #### 5.1.1 Login
@@ -71,6 +72,7 @@ In order to sell or buy the user needs an account.
 - PHP
 - HTML
 - Twig
+![alt text](img/usecasediagram.svg)
 ### 5.3 Non-functional Requirements
 - 404 error page
 - Order Summary page
