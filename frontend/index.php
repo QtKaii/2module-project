@@ -77,6 +77,12 @@ try {
             ]);
             break;
 
+        case '/order':
+            // render registration page
+            echo $twig->render('pages/ordersummary.html.twig', [
+                'current_page' => 'order'
+            ]);
+            break;
         default:
             // check if url matches product detail pattern
             if (preg_match('/^\/product\/(\d+)$/', $path, $matches)) {
