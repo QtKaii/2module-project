@@ -78,11 +78,26 @@ try {
             break;
 
         case '/order':
-            // render registration page
+            // render order summary page
             echo $twig->render('pages/ordersummary.html.twig', [
                 'current_page' => 'order'
             ]);
             break;
+
+        case '/create':
+            // render create product page
+            echo $twig->render('pages/productcreation.html.twig', [
+                'current_page' => 'productcreation'
+            ]);
+            break;
+
+        case '/created':
+            // render product created confirmation page
+            echo $twig->render('pages/productMade.html.twig', [
+                'current_page' => 'prodectConfirm'
+            ]);
+            break;
+
         default:
             // check if url matches product detail pattern
             if (preg_match('/^\/product\/(\d+)$/', $path, $matches)) {
