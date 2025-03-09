@@ -14,6 +14,12 @@
         } %}
 
         {% include 'components/form-input.html.twig' with {
+            'name': 'name',
+            'placeholder': 'Full Name',
+            'required': true
+        } %}
+
+        {% include 'components/form-input.html.twig' with {
             'name': 'email',
             'type': 'email',
             'placeholder': 'Email address',
