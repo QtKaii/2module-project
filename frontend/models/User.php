@@ -104,7 +104,7 @@ class User {
     public function deleteUser($person, $username) {
         // person is the user deleting the account
         // if the person is not an admin, or themselves, return false
-        if ($person.username != $username && !$person.is_admin) {
+        if ($person['username'] != $username && !$person['is_admin']) {
             return false;
         }
 
