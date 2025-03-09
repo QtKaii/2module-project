@@ -3,6 +3,18 @@
 class User {
     private $db;
 
+    private function createTable() {
+        $query = "CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            password TEXT NOT NULL,
+            username TEXT NOT NULL,
+            email TEXT,
+            is_admin BOOLEAN DEFAULT 0,
+            is_seller BOOLEAN DEFAULT 0
+        )";
+        $this->db->exec($query);
+    }
+
     public function __construct($db) {
         $this->db = $db;
         $this->createTable();
@@ -45,18 +57,6 @@ class User {
 
         // return the number of rows affected
         return $this->db->changes();
-    }
-
-    private function createTable() {
-        $query = "CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            password TEXT NOT NULL,
-            username TEXT NOT NULL,
-            email TEXT,
-            is_admin BOOLEAN DEFAULT 0,
-            is_seller BOOLEAN DEFAULT 0
-        )";
-        $this->db->exec($query);
     }
 
     public function createUser($username, $password, $email) {
