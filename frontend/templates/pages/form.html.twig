@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Form to Add Product to Cart{% endblock %}
+
+{% block content %}
+
+<form>
+<table>
+<tr>
+<td>Product Name:</td>
+<td><input type="text" name="product_name"></td>
+</tr>
+<tr>
+<td>Product Price:</td>
+<td><input type="text" name="product_price"></td>
+</tr>
+<tr>
+<td>Product Quantity:</td>
+<td><input type="text" name="product_quantity"></td>
+</tr>
+<tr>
+<td>Product Description:</td>
+<td><textarea name="product_description"></textarea></td>
+</tr>
+<tr>
+<td></td>
+<td><input type="submit" value="Add to Cart"></td>
+</tr>
+</table>
+<form>

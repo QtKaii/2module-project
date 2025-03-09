@@ -6,6 +6,19 @@ require_once __DIR__ . '/vendor/autoload.php';
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
+  // handle user api requests
+require_once __DIR__ . '/models/User.php';
+require_once __DIR__ . '/models/Product.php';
+
+session_start();
+
+
+$db = new SQLite3(__DIR__ . '/db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+
+// create user api instance
+$userApi = new User($db);
+$productApi = new Product($db);
+
 // ensure proper content type
 header('Content-Type: text/html; charset=utf-8');
 
@@ -26,34 +39,113 @@ $twig = new Environment($loader, [
     'auto_reload' => true,
     'debug' => true
 ]);
+$twig->addGlobal('session', $_SESSION);
 
 // get the current request url
 $request = $_SERVER['REQUEST_URI'];
 $path = parse_url($request, PHP_URL_PATH);
 
-// mock product data for demonstration
-$products = [
-    ['id' => 1, 'title' => 'Vintage Camera - As Is', 'description' => 'Old camera, untested. Sold as is.', 'price' => '45.50', 'image' => '/images/vintage.jpg'],
-    ['id' => 2, 'title' => 'Antique Pocket Watch', 'description' => 'A beautiful antique pocket watch. Minor wear.', 'price' => '120.00', 'image' => '/images/pocketwatch.jpg'],
-    ['id' => 3, 'title' => 'Retro NES Video Game Console', 'description' => 'Classic NES with one controller. Some scratches.', 'price' => '75.00', 'image' => '/images/retro.jpg'],
-    ['id' => 4, 'title' => 'Collectible Coin Set', 'description' => 'Rare coin set in protective case. Great condition.', 'price' => '250.00', 'image' => '/images/coins.jpg'],
-];
-
 try {
     // handle different page routes
     switch ($path) {
+
+        case '/api/product/create':
+            $name = $_POST['name'];
+            $description = $_POST['description'];
+            $sale_type = $_POST['sale_type'];
+            $base_price = $_POST['base_price'];
+            $productApi->createProduct($name, $description, $sale_type, $base_price);
+            break;
+
+        case '/api/product/read':
+            break;
+        
+        case '/api/product/update':
+            break;
+   
+        case '/api/product/delete':
+            break;
+
+
+        case '/api/user/create':
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            $email = $_POST['email'];
+            $userApi->createUser($username, $password, $email);
+            break;
+
+        case '/api/user/read':
+            break;
+
+        case '/api/user/update':
+            break;
+
+        case '/api/user/delete':
+            break;
+
+        case '/api/user/login':
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            $user = $userApi->login($username, $password);
+            if ($user) {
+                $_SESSION['user'] = $user;
+                // redirect to /
+                header('Location: /');
+                echo json_encode($user);
+            } else {
+                http_response_code(401);
+            }
+            break;
+        case '/api/user/logout':
+            unset($_SESSION['user']);
+            // redirect to /
+            header('Location: /');
+            break;
+
+        case '/admin/createproduct':
+            $user = $_SESSION['user'];
+
+            if (!$user || !$user['is_admin']) {
+                http_response_code(403);
+                return;
+            }
+            
+            // render create product page
+            echo $twig->render('pages/createproduct.html.twig', [
+                'current_page' => 'createproduct'
+            ]);
+            break;
+
+
+
+        case '/profile':
+
+            // render profile page
+            echo $twig->render('pages/profile.html.twig', [
+                'current_page' => 'profile'
+            ]);
+            break;
+
+
         case '/':
         case '/index':
+            // get user from session
+            // check if undefined first
+            $user = $_SESSION['user'] ?? null;
+
+
             // render home page with product list
             echo $twig->render('pages/index.html.twig', [
                 'current_page' => 'home',
-                'products' => $products
+                'user' => $user
             ]);
             break;
+
+
         case '/cart':
             // render shopping cart page
             echo $twig->render('pages/cart.html.twig', [
-                'current_page' => 'cart'
+                'current_page' => 'cart',
             ]);
             break;
         case '/wishlist':

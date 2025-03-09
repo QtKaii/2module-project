@@ -12,6 +12,10 @@
 *.sublime-workspace
 *.sublime-project
 
+# DB
+db.sqlite
+
+
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -30,3 +34,4 @@ Thumbs.db
 *.log
 
 .DS_Store
+.aider*

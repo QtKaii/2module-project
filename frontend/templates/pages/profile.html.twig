@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+{% if session.user %}
+<h1>Profile</h1>
+
+<p>Username: {{ session.user.username }}</p>
+<p>Email: {{ session.user.email }}</p>
+<p>Is Seller: {{ session.user.is_seller ? 'Yes' : 'No' }}</p>
+<p>Is Admin: {{ session.user.is_admin ? 'Yes' : 'No' }}</p>
+{% else %}
+<p>You are not logged in.</p>
+{% endif %}
+
+{% endblock %}
