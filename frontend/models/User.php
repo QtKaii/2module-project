@@ -24,6 +24,7 @@ class User {
         if (!$user) {
             $this->createUser('user2', 'user2', 'user2@user.com');
         }
+        $this->makeSeller($user);
 
         $user = $this->getUserByUsername('user3');
         if (!$user) {
@@ -31,6 +32,19 @@ class User {
         }
 
 
+    }
+
+    public function makeSeller($user) {
+        $query = "UPDATE users SET is_seller = 1 WHERE username = :username";
+        $stmt = $this->db->prepare($query);
+
+        // bind ":username" to $username
+        $stmt->bindValue(':username', $user['username'], SQLITE3_TEXT);
+        // execute the query
+        $stmt->execute();
+
+        // return the number of rows affected
+        return $this->db->changes();
     }
 
     private function createTable() {
@@ -90,6 +104,9 @@ class User {
     public function deleteUser($person, $username) {
         // person is the user deleting the account
         // if the person is not an admin, or themselves, return false
+        if ($person.username != $username && !$person.is_admin) {
+            return false;
+        }
 
         $query = "DELETE FROM users WHERE username = :username";
         $stmt = $this->db->prepare($query);

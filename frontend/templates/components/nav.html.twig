@@ -3,8 +3,11 @@
 
 	{% if session.user %}
 		<a href="/profile" class="text-white px-2 hover:text-gray-300 {{ current_page == 'profile' ? 'underline' : '' }}">Profile</a>
-		<a href="/api/user/logout" class="text-white
-			        px-2 hover:text-gray-300">Logout</a>
+		<a href="/api/user/logout" class="text-white px-2 hover:text-gray-300">Logout</a>
+
+        {% if session.user.is_admin %}
+            <a href="/admin/product/add" class="text-white px-2 hover:text-gray-300 {{ current_page == 'admin' ? 'underline' : '' }}">Create Product</a>
+        {% endif %}
 	{% else %}
 		<a href="/login" class="text-white px-2 hover:text-gray-300 {{ current_page == 'login' ? 'underline' : '' }}">Login</a>
 		<a href="/register" class="text-white px-2 hover:text-gray-300 {{ current_page == 'register' ? 'underline' : '' }}">SignUp</a>

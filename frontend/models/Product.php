@@ -61,4 +61,28 @@ class Product
         return $this->db->lastInsertRowID();
     }
 
+    public function getAllProducts() {
+        $query = "SELECT * FROM products";
+        $stmt = $this->db->prepare($query);
+        $result = $stmt->execute();
+
+        $products = [];
+        while ($row = $result->fetchArray()) {
+            $products[] = $row;
+        }
+
+        return $products;
+    }
+
+    public function getProductById($id) {
+        $query = "SELECT * FROM products WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
+
+        $result = $stmt->execute();
+
+        return $result->fetchArray();
+    }
+
 }

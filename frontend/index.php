@@ -6,7 +6,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-  // handle user api requests
+// handle user api requests
 require_once __DIR__ . '/models/User.php';
 require_once __DIR__ . '/models/Product.php';
 
@@ -55,15 +55,53 @@ try {
             $sale_type = $_POST['sale_type'];
             $base_price = $_POST['base_price'];
             $productApi->createProduct($name, $description, $sale_type, $base_price);
+
+            header('Location: /');
+
             break;
 
         case '/api/product/read':
             break;
-        
+
         case '/api/product/update':
             break;
-   
+
         case '/api/product/delete':
+            break;
+
+        case '/admin/product/add':
+
+            if (!$_SESSION['user']['is_admin']) {
+                http_response_code(403);
+                return;
+            }
+
+            // render create product page
+            echo $twig->render('pages/addobject.html.twig', [
+                'action' => '/api/product/create',
+                'fields' => [
+                    [
+                        'name' => 'name',
+                        'type' => 'text',
+                        'label' => 'Name'
+                    ],
+                    [
+                        'name' => 'description',
+                        'type' => 'text',
+                        'label' => 'Description'
+                    ],
+                    [
+                        'name' => 'sale_type',
+                        'type' => 'text',
+                        'label' => 'Sale Type'
+                    ],
+                    [
+                        'name' => 'base_price',
+                        'type' => 'number',
+                        'label' => 'Base Price'
+                    ]
+                ]
+            ]);
             break;
 
 
@@ -96,28 +134,12 @@ try {
                 http_response_code(401);
             }
             break;
+
         case '/api/user/logout':
             unset($_SESSION['user']);
             // redirect to /
             header('Location: /');
             break;
-
-        case '/admin/createproduct':
-            $user = $_SESSION['user'];
-
-            if (!$user || !$user['is_admin']) {
-                http_response_code(403);
-                return;
-            }
-            
-            // render create product page
-            echo $twig->render('pages/createproduct.html.twig', [
-                'current_page' => 'createproduct'
-            ]);
-            break;
-
-
-
         case '/profile':
 
             // render profile page
@@ -129,15 +151,10 @@ try {
 
         case '/':
         case '/index':
-            // get user from session
-            // check if undefined first
-            $user = $_SESSION['user'] ?? null;
-
-
             // render home page with product list
             echo $twig->render('pages/index.html.twig', [
                 'current_page' => 'home',
-                'user' => $user
+                'products' => $productApi->getAllProducts()
             ]);
             break;
 
@@ -172,16 +189,14 @@ try {
         default:
             // check if url matches product detail pattern
             if (preg_match('/^\/product\/(\d+)$/', $path, $matches)) {
-                $productId = (int)$matches[1];
+                $productId = (int) $matches[1];
                 // find product by id
-                $product = array_filter($products, function($p) use ($productId) {
-                    return $p['id'] === $productId;
-                });
-                
-                if (!empty($product)) {
-                    // render product detail page if found
-                    $product = reset($product);
+                $product = $productApi->getProductById($productId);
+
+                if ($product) {
+                    // render product detail page
                     echo $twig->render('pages/product.html.twig', [
+                        'current_page' => 'product',
                         'product' => $product
                     ]);
                 } else {
@@ -199,7 +214,7 @@ try {
 } catch (Exception $e) {
     // log any errors that occur
     error_log($e->getMessage());
-    
+
     // handle errors differently in production vs development
     if (getenv('ENVIRONMENT') === 'production') {
         http_response_code(500);
