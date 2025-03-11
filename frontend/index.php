@@ -51,11 +51,12 @@ try {
             $fullname=$_POST['name'];
             $email=$_POST['email'];
             $password=$_POST['password'];
-            $confirmPassowrd=$_POST['password_confirm'];
+            $confirmPassword=$_POST['password_confirm'];
             $is_seller=$_POST['seller-toggle'];
-            if ($password==$confirmPassowrd)
+            if ($password==$confirmPassword)
             {
                 $userAPI->makeUser($username,$fullname,$email,$password,$is_seller);
+                echo $twig->render('pages/index.html.twig');
             }
             else
             {
@@ -69,7 +70,7 @@ try {
             $user =$userAPI->login($username,$password);
             if ($user)
             {
-                $_SESSION['user']=$user;
+                $_SESSION['user']=$user['username'];
                 header('Location: /');
                 echo json_encode($user);
             }
