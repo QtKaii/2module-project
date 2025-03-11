@@ -43,6 +43,22 @@ try {
     // handle different page routes
     switch ($path) 
     {
+        case 'api/user/create':
+            $username=$_POST['username'];
+            $fullname=$_POST['FUll Name'];
+            $email=$_POST['email'];
+            $password=$_POST['Password'];
+            $confirmPassowrd['Confirm Password'];
+            $is_seller=$_POST['seller-toggle'];
+            if ($password==$confirmPassowrd)
+            {
+                $userAPI->makeUser($username,$fullname,$email,$password,$is_seller);
+            }
+            else
+            {
+                echo $twig->render('pages/error.html.twig');
+            }
+
         case '/':
         case '/index':
             // render home page with product list

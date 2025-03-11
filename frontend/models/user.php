@@ -35,7 +35,7 @@ class user
 
     }
 
-    private function makeUser($username,$fullname,$email,$password,$is_seller)
+    public function makeUser($username,$fullname,$email,$password,$is_seller)
     {
         $query = 
         "
