@@ -79,6 +79,12 @@ try {
                 http_response_code(401);
             }
             break;
+
+        case '/logout'
+            unset($_SESSION['user']);
+            header('Location: /');
+            break;
+
         case '/':
         case '/index':
             // render home page with product list
