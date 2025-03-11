@@ -33,6 +33,28 @@ class user
             $this->makeUser('user','User one','user@gmail.com','user',false);
         }
 
+        $admin= $this->getUserName('admin');
+        if (!$user)
+        {
+            $this->makeUser('admin','Administrator','admin@gmail.com','admin',false);
+            $admin->setAdmin('admin');
+        }
+
+    }
+
+    private function setAdmin($username)
+    {
+        $query = 
+        "
+            UPDATE Users
+            SET is_admin = 1
+            WHERE username= ?
+        ";
+        $stmt= $this->db->prepare($query);
+
+        $stmt->bindValue(1, $username, SQLITE3_TEXT);
+
+        $stmt->execute();
     }
 
     public function makeUser($username,$fullname,$email,$password,$is_seller)

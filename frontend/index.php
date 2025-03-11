@@ -80,9 +80,13 @@ try {
             }
             break;
 
-        case '/logout'
+        case '/logout':
             unset($_SESSION['user']);
             header('Location: /');
+            break;
+
+        case '/profile':
+            echo $twig->render('pages/profile.html.twig');
             break;
 
         case '/':
