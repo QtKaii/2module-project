@@ -6,6 +6,13 @@ require_once __DIR__ . '/vendor/autoload.php';
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
+require_once __DIR__ . '/models/user.php';
+
+session_start();
+$db= new SQLite3(__DIR__ . 'db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+
+$userAPI = new user($db);
+
 // ensure proper content type
 header('Content-Type: text/html; charset=utf-8');
 
@@ -31,17 +38,11 @@ $twig = new Environment($loader, [
 $request = $_SERVER['REQUEST_URI'];
 $path = parse_url($request, PHP_URL_PATH);
 
-// mock product data for demonstration
-$products = [
-    ['id' => 1, 'title' => 'Vintage Camera - As Is', 'description' => 'Old camera, untested. Sold as is.', 'price' => '45.50', 'image' => '/images/vintage.jpg'],
-    ['id' => 2, 'title' => 'Antique Pocket Watch', 'description' => 'A beautiful antique pocket watch. Minor wear.', 'price' => '120.00', 'image' => '/images/pocketwatch.jpg'],
-    ['id' => 3, 'title' => 'Retro NES Video Game Console', 'description' => 'Classic NES with one controller. Some scratches.', 'price' => '75.00', 'image' => '/images/retro.jpg'],
-    ['id' => 4, 'title' => 'Collectible Coin Set', 'description' => 'Rare coin set in protective case. Great condition.', 'price' => '250.00', 'image' => '/images/coins.jpg'],
-];
 
 try {
     // handle different page routes
-    switch ($path) {
+    switch ($path) 
+    {
         case '/':
         case '/index':
             // render home page with product list
