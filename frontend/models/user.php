@@ -33,11 +33,17 @@ class user
             $this->makeUser('user','User one','user@gmail.com','user',false);
         }
 
-        $admin= $this->getUserName('admin');
+        $user= $this->getUserName('admin');
         if (!$user)
         {
             $this->makeUser('admin','Administrator','admin@gmail.com','admin',false);
-            $admin->setAdmin('admin');
+            $user->setAdmin('admin');
+        }
+
+        $user= $this->getUserName('seller');
+        if (!$user)
+        {
+            $this->makeUser('seller','Seller one','seller@gmail.com','seller',true);
         }
 
     }

@@ -9,5 +9,11 @@
 		<a href="/profile" class="text-white px-2 hover:text-gray-300 {{ current_page == 'profile' ? 'underline' : '' }}">Profile</a>
 		<a href="/logout" class="text-white px-2 hover:text-gray-300 {{ current_page == 'logout' ? 'underline' : '' }}">Logout</a>
 	{% endif %}
+	{% if session.user.is_admin %}
+    	<a href="/delete" class="text-white px-2 hover:text-gray-300 {{ current_page == 'delete' ? 'underline' : '' }}">Admin</a>
+	{% endif %}
+	{% if session.user.is_seller %}
+    	<a href="/create" class="text-white px-2 hover:text-gray-300 {{ current_page == 'create' ? 'underline' : '' }}">Create Product</a>
+	{% endif %}
     <a href="/cart" class="text-white px-2 hover:text-gray-300 {{ current_page == 'cart' ? 'underline' : '' }}">Cart</a>
 </nav>
