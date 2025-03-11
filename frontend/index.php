@@ -71,12 +71,11 @@ try {
             if ($user)
             {
                 $_SESSION['user']=$user['username'];
-                header('Location: /');
-                exit();
+                echo $twig->render('pages/profile.html.twig');
             }
             else
             {
-                echo $twig->render('pages/profile.html.twig');
+                echo $twig->render('pages/error.html.twig');
             }
             break;
 
