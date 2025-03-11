@@ -56,15 +56,14 @@ try {
             }
             else
             {
-                echo $twig->render('pages/error.html.twig');
+                echo $twig->render('pages/wishlist.html.twig');
             }
-
+            break;
         case '/':
         case '/index':
             // render home page with product list
             echo $twig->render('pages/index.html.twig', [
                 'current_page' => 'home',
-                'products' => $products
             ]);
             break;
         case '/cart':
