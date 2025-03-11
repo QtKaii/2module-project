@@ -78,11 +78,12 @@ try {
             if ($user)
             {
                 $_SESSION['user']=$user['username'];
-                echo $twig->render('pages/profile.html.twig');
+                header('Location: /');
+                echo json_encode($user);
             }
             else
             {
-                echo $twig->render('pages/error.html.twig');
+                http_response_code(401);
             }
             break;
 
