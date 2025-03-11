@@ -9,9 +9,11 @@ use Twig\Loader\FilesystemLoader;
 require_once __DIR__ . '/models/user.php';
 
 session_start();
-$db= new SQLite3(__DIR__ . 'db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+$db= new SQLite3(__DIR__ . '/db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
 
 $userAPI = new user($db);
+
+$userAPI->constructDB($db);
 
 // ensure proper content type
 header('Content-Type: text/html; charset=utf-8');
@@ -34,6 +36,7 @@ $twig = new Environment($loader, [
     'debug' => true
 ]);
 
+$twig->addGlobal('session', $_SESSION);
 // get the current request url
 $request = $_SERVER['REQUEST_URI'];
 $path = parse_url($request, PHP_URL_PATH);
@@ -43,12 +46,12 @@ try {
     // handle different page routes
     switch ($path) 
     {
-        case 'api/user/create':
+        case '/api/user/create':
             $username=$_POST['username'];
-            $fullname=$_POST['FUll Name'];
+            $fullname=$_POST['name'];
             $email=$_POST['email'];
-            $password=$_POST['Password'];
-            $confirmPassowrd['Confirm Password'];
+            $password=$_POST['password'];
+            $confirmPassowrd=$_POST['password_confirm'];
             $is_seller=$_POST['seller-toggle'];
             if ($password==$confirmPassowrd)
             {
@@ -57,6 +60,22 @@ try {
             else
             {
                 echo $twig->render('pages/wishlist.html.twig');
+            }
+            break;
+
+        case '/api/user/login':
+            $username =$_POST['username'];
+            $password =$_POST['password'];
+            $user =$userAPI->login($username,$password);
+            if ($user)
+            {
+                $_SESSION['user']=$user;
+                header('Location: /');
+                echo json_encode($user);
+            }
+            else
+            {
+                http_response_code(401);
             }
             break;
         case '/':

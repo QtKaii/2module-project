@@ -10,10 +10,10 @@ class user
         "
             CREATE TABLE IF NOT EXISTS Users
             (
-                id INTEGER PRIME KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT NOT NULL, 
                 fullname TEXT NOT NULL, 
-                email EMAIL NOT NULL, 
+                email TEXT NOT NULL, 
                 password TEXT NOT NULL,
                 is_seller BOOLEAN NOT NULL,
                 is_admin BOOLEAN DEFAULT 0
@@ -57,10 +57,10 @@ class user
 
     public function getUserName($str)
     {
-        $query= "SELECT * FROM Users WHERE username= .username";
+        $query= "SELECT * FROM Users WHERE username= ?";
         $stmt = $this->db->prepare($query);
 
-        $stmt->bindValue('.username', $str,SQLITE3_TEXT);
+        $stmt->bindValue(1, $str,SQLITE3_TEXT);
 
         $result = $stmt->execute();
         return $result->fetchArray();
