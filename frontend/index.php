@@ -72,11 +72,11 @@ try {
             {
                 $_SESSION['user']=$user['username'];
                 header('Location: /');
-                echo json_encode($user);
+                exit();
             }
             else
             {
-                http_response_code(401);
+                echo $twig->render('pages/profile.html.twig');
             }
             break;
 
