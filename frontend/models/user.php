@@ -30,20 +30,20 @@ class user
         $user= $this->getUserName('user');
         if (!$user)
         {
-            $this->makeUser('user','User one','user@gmail.com','user',false);
+            $this->makeUser('user','User one','user@gmail.com','user',0);
         }
 
         $admin= $this->getUserName('admin');
         if (!$admin)
         {
-            $this->makeUser('admin','Administrator','admin@gmail.com','admin',false);
-            $admin->setAdmin('admin');
+            $this->makeUser('admin','Administrator','admin@gmail.com','admin',0);
+            $this->setAdmin('admin');
         }
 
         $seller= $this->getUserName('seller');
         if (!$seller)
         {
-            $this->makeUser('seller','Seller one','seller@gmail.com','seller',true);
+            $this->makeUser('seller','Seller one','seller@gmail.com','seller',1);
         }
 
     }
@@ -101,7 +101,7 @@ class user
         {
             if (password_verify($password, $user['password'])) 
             {
-                return true;
+                return $this->getUserName($username);
             } 
             else 
             {
