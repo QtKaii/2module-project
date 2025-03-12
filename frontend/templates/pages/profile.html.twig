@@ -5,8 +5,10 @@
 {% block content %}
 <h1>User Profile</h1>
 <p>Username- {{session.user.username}}</p>
-<p>Full Name- {{session.user.name}}</p>
+<p>Full Name- {{session.user.fullname}}</p>
 <p>Email- {{session.user.email}}</p>
-<p>Seller?- {{session.user.username}}</p>
-
+<p>Seller?- {{session.user.is_seller}}</p>
+{% if session.user.is_admin %}
+    <p>Admin?- {{session.user.is_admin}}</p>
+{% endif %}
 {% endblock %}

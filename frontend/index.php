@@ -50,9 +50,11 @@ try {
             $username=$_POST['username'];
             $fullname=$_POST['name'];
             $email=$_POST['email'];
+            $dob=$_POST['dob'];
             $password=$_POST['password'];
             $confirmPassword=$_POST['password_confirm'];
-            if($_POST['seller-toggle'])
+            $is_seller=$_POST['seller-toggle'];
+            if($is_seller)
             {
                 $is_seller=1;
             }
@@ -62,7 +64,7 @@ try {
             }
             if ($password==$confirmPassword)
             {
-                $userAPI->makeUser($username,$fullname,$email,$password,$is_seller);
+                $userAPI->makeUser($username,$fullname,$email,$dob,$password,$is_seller);
                 echo $twig->render('pages/index.html.twig');
             }
             else
@@ -77,13 +79,13 @@ try {
             $user =$userAPI->login($username,$password);
             if ($user)
             {
-                $_SESSION['user']=$user['username'];
+                $_SESSION['user']=$user;
                 header('Location: /');
                 echo json_encode($user);
             }
             else
             {
-                echo $twig->render('pages/profile.html.twig');
+                echo $twig->render('pages/trial.php');
             }
             break;
 

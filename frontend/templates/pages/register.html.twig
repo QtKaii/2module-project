@@ -27,6 +27,12 @@
         } %}
 
         {% include 'components/form-input.html.twig' with {
+            'name': 'dob',
+            'type': 'date',
+            'required': true
+        } %}
+
+        {% include 'components/form-input.html.twig' with {
             'name': 'password',
             'type': 'password',
             'placeholder': 'Password',
@@ -46,7 +52,6 @@
             'name': 'seller-toggle',
             'label': 'Are you a seller?',
             'type': 'toggle',
-            'value': 0,
             'required': false
         } %}
 

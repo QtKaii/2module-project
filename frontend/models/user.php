@@ -14,6 +14,7 @@ class user
                 username TEXT NOT NULL, 
                 fullname TEXT NOT NULL, 
                 email TEXT NOT NULL, 
+                dob date NOT NULL, 
                 password TEXT NOT NULL,
                 is_seller BOOLEAN NOT NULL,
                 is_admin BOOLEAN DEFAULT 0
@@ -30,20 +31,20 @@ class user
         $user= $this->getUserName('user');
         if (!$user)
         {
-            $this->makeUser('user','User one','user@gmail.com','user',0);
+            $this->makeUser('user','User one','user@gmail.com','00-00-0000','user',0);
         }
 
         $admin= $this->getUserName('admin');
         if (!$admin)
         {
-            $this->makeUser('admin','Administrator','admin@gmail.com','admin',0);
+            $this->makeUser('admin','Administrator','admin@gmail.com','00-00-0000','admin',0);
             $this->setAdmin('admin');
         }
 
         $seller= $this->getUserName('seller');
         if (!$seller)
         {
-            $this->makeUser('seller','Seller one','seller@gmail.com','seller',1);
+            $this->makeUser('seller','Seller one','seller@gmail.com','00-00-0000','seller',1);
         }
 
     }
@@ -63,20 +64,21 @@ class user
         $stmt->execute();
     }
 
-    public function makeUser($username,$fullname,$email,$password,$is_seller)
+    public function makeUser($username,$fullname,$email,$dob,$password,$is_seller)
     {
         $query = 
         "
-            INSERT INTO Users (username, fullname, email, password, is_seller)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO Users (username, fullname, email, dob, password, is_seller)
+            VALUES (?, ?, ?, ?, ?, ?)
         ";
         $stmt = $this->db->prepare($query);
 
         $stmt->bindValue(1, $username,SQLITE3_TEXT);
         $stmt->bindValue(2, $fullname,SQLITE3_TEXT);
         $stmt->bindValue(3, $email,SQLITE3_TEXT);
-        $stmt->bindValue(4, $password,SQLITE3_TEXT);
-        $stmt->bindValue(5, $is_seller,SQLITE3_TEXT);
+        $stmt->bindValue(4, $dob,SQLITE3_TEXT);
+        $stmt->bindValue(5, $password,SQLITE3_TEXT);
+        $stmt->bindValue(6, $is_seller,SQLITE3_TEXT);
 
         $stmt->execute();
 
@@ -99,17 +101,20 @@ class user
         $user= $this->getUserName($username);
         if ($user) 
         {
-            if (password_verify($password, $user['password'])) 
+            if ($password== $user['password']) 
             {
+                error_log('password verified');
                 return $this->getUserName($username);
             } 
             else 
             {
+                error_log('password not verified');
                 return false; 
             }
         } 
         else 
         {
+            error_log('user doesnt exist');
             return 'User doesnt exist'; 
         }
     }
