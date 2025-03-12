@@ -77,6 +77,72 @@ try {
                 echo $twig->render('pages/trial.php');
             }
             break;
+            
+        case '/update/users':
+            $query = 'SELECT * FROM Users';
+            $result = $db->query($query);
+    
+            $users = [];
+            while ($row = $result->fetchArray(SQLITE3_ASSOC))
+            {
+                $users[] = $row;
+            }
+            error_log('displaying table');
+            echo $twig->render('pages/updateUsers.html.twig',['user'=> $users,'users'=>$users]);
+            break;
+
+        case '/update/single/edit':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userID'])) 
+            {
+                $userID = (int)$_POST['user_id'];
+                $user =$userAPI->getUserByID($userID);
+                echo $twig->render('pages/editUsers.html.twigt',['user'=> $users]);
+                header("Location: /update/single/edit/$userID");
+                exit;
+            }
+            if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['user_id'])) {
+                $userID = (int)$_GET['user_id'];  
+        
+                $stmr = $db->prepare('SELECT * FROM Users WHERE id = :id');
+                $stmr->bindValue(':id', $userID, SQLITE3_INTEGER);
+                $result = $stmr->execute();
+                $user = $result->fetchArray(SQLITE3_ASSOC);
+        
+                if ($user) {
+                    echo $twig->render('pages/editUser.html.twig', [
+                        'user' => $user  
+                    ]);
+                } 
+                else {
+                    http_response_code(404);
+                    echo $twig->render('pages/cart.html.twig');
+                }
+            }
+            break;
+
+        case '/update/single/delete':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userID'])) 
+            {
+                $userID = (int)$_POST['user_id'];    
+
+                $stmr = $db->prepare('DELETE FROM Users WHERE id = :id');
+                $stmr->bindValue(':id', $userID, SQLITE3_INTEGER);
+                $result = $stmr->execute();
+                if ($result) 
+                {
+                    error_log('Did delete');
+                    header('Location: /update/users');
+                    
+                } 
+                else 
+                {
+                    error_log('cant delete');
+                    header('Location: /error');
+                    exit;
+                }
+            }
+            break;
+            
 
         case '/logout':
             unset($_SESSION['user']);
@@ -85,18 +151,6 @@ try {
         
         case '/update':
             echo $twig->render('pages/update.html.twig',array('user'=>$user));
-            break;
-        
-        case '/update/users':
-            $query = 'SELECT * FROM Users';
-            $result = $db->query($query);
-
-            $users = [];
-            while ($row = $result->fetchArray(SQLITE3_ASSOC))
-            {
-                $users[] = $row;
-            }
-            echo $twig->render('pages/updateUsers.html.twig',['user'=> $users,'users'=>$users]);
             break;
 
         case '/profile':

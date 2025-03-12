@@ -20,16 +20,28 @@
             </tr>
         </thead>
         <tbody>
-            {% for user in users %}
-            <tr class="border-b">
-                <td>{{ user.username }}</td>
-                <td>{{ user.fullname }}</td>
-                <td{{ user.email }}</td>
-                <td>{{ user.dob }}</td>
-                <td>{{ user.is_seller ? 'Yes' : 'No' }}</td>
-                <td></td>
-            </tr>
-            {% endfor %}
+    {% for user in users %}
+        <tr class="border-b">
+            <td>{{ user.username }}</td>
+            <td>{{ user.fullname }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.dob }}</td>
+            <td>{{ user.is_seller ? 'Yes' : 'No' }}</td>
+            <td>
+            <form action="/update/single/edit/{{ user.id }}" method="POST">
+                <input type="hidden" name="userID" value="{{ user.id }}">
+                <button type="submit">Edit</button>
+            </form>
+            </td>            
+            <td>
+            <form action="/update/single/delete" method="POST">
+                <input type="hidden" name="userID" value="{{ user.id }}">
+                <button type="submit">Delete</button>
+            </form>
+            </td>  
+        </tr>
+    {% endfor %}
+
         </tbody>
     </table>
     {% else %}

@@ -8,18 +8,18 @@ class user
         $this->db = $db;
         $this->makeTable();
 
-        $user = $this->getUserName('user');
+        $user = $this->getUserByName('user');
         if (!$user) {
             $this->makeUser('user', 'User one', 'user@gmail.com', '00-00-0000', 'user', 0);
         }
 
-        $admin = $this->getUserName('admin');
+        $admin = $this->getUserByName('admin');
         if (!$admin) {
             $this->makeUser('admin', 'Administrator', 'admin@gmail.com', '00-00-0000', 'admin', 0);
             $this->setAdmin('admin');
         }
 
-        $seller = $this->getUserName('seller');
+        $seller = $this->getUserByName('seller');
         if (!$seller) {
             $this->makeUser('seller', 'Seller one', 'seller@gmail.com', '00-00-0000', 'seller', 1);
         }
@@ -70,12 +70,23 @@ class user
         return $this->db->lastInsertRowID();
     }
 
-    public function getUserName($str)
+    public function getUserByName($str)
     {
-        $query = "SELECT * FROM Users WHERE username= ?";
+        $query = "SELECT * FROM Users WHERE username= :username";
         $stmt = $this->db->prepare($query);
 
-        $stmt->bindValue(1, $str, SQLITE3_TEXT);
+        $stmt->bindValue(":username", $str, SQLITE3_TEXT);
+
+        $result = $stmt->execute();
+        return $result->fetchArray();
+    }
+
+    public function getUserByID($id)
+    {
+        $query = "SELECT * FROM Users WHERE id= :id";
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindValue(":id", $id, SQLITE3_TEXT);
 
         $result = $stmt->execute();
         return $result->fetchArray();
@@ -83,10 +94,10 @@ class user
 
     public function login($username, $password)
     {
-        $user = $this->getUserName($username);
+        $user = $this->getUserByName($username);
         if ($user) {
             if (password_verify($password, $user["password"])) {
-                return $this->getUserName($username);
+                return $this->getUserByName($username);
             } else {
                 return null;
             }

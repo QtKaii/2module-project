@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block content %}
+<h2>Edit User</h2>
+<form action="/update/single/save/{{ user.id }}" method="POST">
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Fullname</th>
+        <th>Email</th>
+        <th>DOB</th>
+        <th>Is_Seller?</th>
+    </tr>
+    <tr>
+    <th>{{user.username}}</th>
+    <th><input type="text" name="username" value="{{ user.username }}"></th>
+    <th><input type="text" name="fullname" value="{{ user.fullname }}" class="mt-1 block w-full"></th>
+    <th><input type="email" name="email" value="{{ user.email }}" class="mt-1 block w-full"></th>
+    <th> <input type="date" name="dob" value="{{ user.dob }}" class="mt-1 block w-full"></th>
+    <th><input type="checkbox"  name="is_seller" {% if user.is_seller %}checked{% endif %} class="mt-1"></th>
+    </tr>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</table>
+</form>
+{% endblock %}
