@@ -9,14 +9,10 @@ use Twig\Loader\FilesystemLoader;
 require_once __DIR__ . '/models/user.php';
 
 session_start();
+
 $db= new SQLite3(__DIR__ . '/db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
 
 $userAPI = new user($db);
-
-$userAPI->constructDB($db);
-
-// ensure proper content type
-header('Content-Type: text/html; charset=utf-8');
 
 // enable error reporting for debugging
 error_reporting(E_ALL);
@@ -54,22 +50,15 @@ try {
             $password=$_POST['password'];
             $confirmPassword=$_POST['password_confirm'];
             $is_seller=$_POST['seller-toggle'];
-            if($is_seller)
-            {
-                $is_seller=1;
-            }
-            else
-            {
-                $is_seller=0;
-            }
             if ($password==$confirmPassword)
             {
-                $userAPI->makeUser($username,$fullname,$email,$dob,$password,$is_seller);
-                echo $twig->render('pages/index.html.twig');
+                $user = $userAPI->makeUser($username,$fullname,$email,$dob,$password,$is_seller);
+                header('location: /login');
             }
             else
             {
-                echo $twig->render('pages/wishlist.html.twig');
+                $_SESSION['ERROR'] = "Your Passwords did not match!";
+                header('location: /register');
             }
             break;
 
@@ -92,6 +81,22 @@ try {
         case '/logout':
             unset($_SESSION['user']);
             header('Location: /');
+            break;
+        
+        case '/update':
+            echo $twig->render('pages/update.html.twig',array('user'=>$user));
+            break;
+        
+        case '/update/users':
+            $query = 'SELECT * FROM Users';
+            $result = $db->query($query);
+
+            $users = [];
+            while ($row = $result->fetchArray(SQLITE3_ASSOC))
+            {
+                $users[] = $row;
+            }
+            echo $twig->render('pages/updateUsers.html.twig',['user'=> $users,'users'=>$users]);
             break;
 
         case '/profile':
@@ -127,9 +132,17 @@ try {
 
         case '/register':
             // render registration page
+            // if error header exists pass to page
+
             echo $twig->render('pages/register.html.twig', [
-                'current_page' => 'register'
+                'current_page' => 'register',
+                'error' => isset($_SESSION['ERROR']) ? $_SESSION['ERROR'] : null
             ]);
+
+            if (isset($_SESSION['ERROR'])) { 
+                unset($_SESSION['ERROR']);
+            } 
+
             break;
 
         case '/order':

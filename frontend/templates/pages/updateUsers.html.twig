@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Update Users{% endblock %}
+
+{% block content %}
+<div class="container mx-auto my-8">
+    <h2 class="text-3xl font-semibold text-center mb-6">Users List</h2>
+    
+    {% if users is not empty %}
+    <table >
+        <thead>
+            <tr class="border-b">
+                <th>Username</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Date of Birth</th>
+                <th>Is Seller</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr class="border-b">
+                <td>{{ user.username }}</td>
+                <td>{{ user.fullname }}</td>
+                <td{{ user.email }}</td>
+                <td>{{ user.dob }}</td>
+                <td>{{ user.is_seller ? 'Yes' : 'No' }}</td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p class="text-center text-gray-600">No users found.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -37,7 +37,7 @@
             {% endif %}"
         >
     {% endif %}
-    {% if error is defined and error %}
+    {% if error is defined and error and show_error is defined and show_error %}
         <p class="mt-1 text-sm text-red-600">{{ error }}</p>
     {% endif %}
 </div>
