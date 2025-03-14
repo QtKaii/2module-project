@@ -12,7 +12,7 @@ session_start();
 
 $db= new SQLite3(__DIR__ . '/db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
 
-$userAPI = new user($db);
+//$userAPI = new user($db);
 
 // enable error reporting for debugging
 error_reporting(E_ALL);
@@ -50,9 +50,12 @@ try {
             $password=$_POST['password'];
             $confirmPassword=$_POST['password_confirm'];
             $is_seller=$_POST['seller-toggle'];
+
+            $user= new user($username, $fullname, $email, $dob, $password, $is_seller);
+            $user->makeTable()
             if ($password==$confirmPassword)
             {
-                $user = $userAPI->makeUser($username,$fullname,$email,$dob,$password,$is_seller);
+            $user = $userAPI->makeUser($username,$fullname,$email,$dob,$password,$is_seller);
                 header('location: /login');
             }
             else
@@ -77,6 +80,10 @@ try {
                 echo $twig->render('pages/trial.php');
             }
             break;
+           
+        case 'wdx':
+            $userObj = new User($username, $fullname, $email, $dob, $password, $is_seller);
+            
             
         case '/update/users':
             $query = 'SELECT * FROM Users';
