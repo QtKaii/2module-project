@@ -7,12 +7,15 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 require_once __DIR__ . '/models/user.php';
+require_once __DIR__ . '/models/wishlist.php';
 
 session_start();
 
 $db= new SQLite3(__DIR__ . '/db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
 
 $userAPI = new user($db);
+$userWishlist= new wishlist($db);
+
 
 // enable error reporting for debugging
 error_reporting(E_ALL);
