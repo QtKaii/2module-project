@@ -1,5 +1,4 @@
 <?php
-$db= new SQLite3(__DIR__ . '/db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
 
 class user
 {
@@ -12,15 +11,29 @@ class user
     private$is_seller;
     private $is_admin=0;
 
-    public function __construct($username, $fullname, $email, $dob, $password, $is_seller)
+    public function __construct($_POSTDATA)
     {
-        $this->username=$username;
-        $this->fullname=$fullname;
-        $this->email=$email;
-        $this->dob=$dob;
-        $this->password=$password;
-        $this->is_seller=$is_seller;
+        $this->username=$_POSTDATA['username'];
+        $this->fullname=$_POSTDATA['name'];
+        $this->email=$_POSTDATA['email'];
+        $this->dob=$_POSTDATA['dob'];
+        $this->password=$_POSTDATA['password'];
+        $this->is_seller=$_POSTDATA['seller-toggle'];
     }
+
+    public function getByUsername($str)
+    {
+        if($str==$this->username)
+        {
+            return true;
+        }
+        else
+        {
+            error_log('user by name doesnt exist, user.php');
+            return false;
+        }
+    }
+    
     public function setAdmin()
     {
         $this->is_admin=1;

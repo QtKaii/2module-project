@@ -6,7 +6,7 @@
 <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <h1 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create Account</h1>
     
-    <form class="mt-8 space-y-6" method="post" action='api/user/create'>
+    <form class="mt-8 space-y-6" method="post" action='api/user/create' onsubmit="return passwordCheck()">
         {% include 'components/form-input.html.twig' with {
             'name': 'username',
             'placeholder': 'Username',

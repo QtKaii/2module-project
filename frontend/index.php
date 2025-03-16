@@ -7,6 +7,8 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 require_once __DIR__ . '/models/user.php';
+require_once __DIR__ . '/models/userDB.php';
+
 
 session_start();
 
@@ -43,22 +45,19 @@ try {
     switch ($path) 
     {
         case '/api/user/create':
-            $username=$_POST['username'];
-            $fullname=$_POST['name'];
-            $email=$_POST['email'];
-            $dob=$_POST['dob'];
-            $password=$_POST['password'];
-            $confirmPassword=$_POST['password_confirm'];
-            $is_seller=$_POST['seller-toggle'];
 
-            $user= new user($username, $fullname, $email, $dob, $password, $is_seller);
+            $user= new user($_POST);
+            header('Location: /login');
             break;
 
         case '/api/user/login':
             $username =$_POST['username'];
             $password =$_POST['password'];
-            $user =$userAPI->login($username,$password);
-            if ($user)
+
+            $userDB= new userDB();
+            $userlogin = $userDB->login($username, $password);
+
+            if ($userlogin)
             {
                 $_SESSION['user']=$user;
                 header('Location: /');
@@ -69,10 +68,6 @@ try {
                 echo $twig->render('pages/trial.php');
             }
             break;
-           
-        case 'wdx':
-            $userObj = new User($username, $fullname, $email, $dob, $password, $is_seller);
-            
             
         case '/update/users':
             $query = 'SELECT * FROM Users';
