@@ -71,12 +71,14 @@ try {
             }
             break;
             
+        //shows users table
         case '/update/users':
             $userDB= new userDB();
             $users=$userDB->getAllUsers();
             echo $twig->render('pages/updateUsers.html.twig',['users'=>$users]);
             break;
             
+        //shows one user
         case '/update/single/edit':
             error_log('insifr case');
             $username=$_POST['edit'];
@@ -87,6 +89,7 @@ try {
             echo $twig->render('pages/editUser.html.twig',['user'=>$user]);
             break;
 
+        //shows one user
         case '/update/single/delete':
             error_log('inside delete case');
             $username=$_POST['delete'];
@@ -95,6 +98,7 @@ try {
             echo $twig->render('pages/deleteUser.html.twig',['user'=>$user]);
             break;
 
+        //update one user
         case '/update/single/save':
             $userDB = new userDB();
             $userID = $_POST['id'];
@@ -106,7 +110,8 @@ try {
             $userDB->updateUser($user);
             header('Location: /profile');
             break;
-            
+        
+        //delete one user
         case '/update/single/deleteUser':
             error_log('inside delerte single log user');
             $userDB = new userDB();
@@ -130,8 +135,16 @@ try {
             break;
         
         case '/update':
-            echo $twig->render('pages/update.html.twig',array('user'=>$user));
+            if (isset($_SESSION['user']) && $_SESSION['user']['username'] == 'admin') 
+            {
+                echo $twig->render('pages/update.html.twig', array('user' => $user));
+            } 
+            else 
+            {
+                header('Location: /error'); // Redirect to an error page or another page if the user is not an admin
+            }
             break;
+
 
         case '/profile':
             echo $twig->render('pages/profile.html.twig');
