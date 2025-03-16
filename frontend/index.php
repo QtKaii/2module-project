@@ -47,6 +47,8 @@ try {
         case '/api/user/create':
 
             $user= new user($_POST);
+            $userDB= new userDB();
+            $userDB->makeUser($user);
             header('Location: /login');
             break;
 
@@ -59,81 +61,68 @@ try {
 
             if ($userlogin)
             {
-                $_SESSION['user']=$user;
-                header('Location: /');
-                echo json_encode($user);
+                $_SESSION['user'] = $userlogin;
+                //error_log(json_encode($_SESSION['user']));
+                header('Location: /profile');
             }
             else
             {
-                echo $twig->render('pages/trial.php');
+                header('Location: /error');
             }
             break;
             
         case '/update/users':
-            $query = 'SELECT * FROM Users';
-            $result = $db->query($query);
-    
-            $users = [];
-            while ($row = $result->fetchArray(SQLITE3_ASSOC))
-            {
-                $users[] = $row;
-            }
-            error_log('displaying table');
-            echo $twig->render('pages/updateUsers.html.twig',['user'=> $users,'users'=>$users]);
+            $userDB= new userDB();
+            $users=$userDB->getAllUsers();
+            echo $twig->render('pages/updateUsers.html.twig',['users'=>$users]);
             break;
-
+            
         case '/update/single/edit':
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userID'])) 
-            {
-                $userID = (int)$_POST['user_id'];
-                $user =$userAPI->getUserByID($userID);
-                echo $twig->render('pages/editUsers.html.twigt',['user'=> $users]);
-                header("Location: /update/single/edit/$userID");
-                exit;
-            }
-            if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['user_id'])) {
-                $userID = (int)$_GET['user_id'];  
-        
-                $stmr = $db->prepare('SELECT * FROM Users WHERE id = :id');
-                $stmr->bindValue(':id', $userID, SQLITE3_INTEGER);
-                $result = $stmr->execute();
-                $user = $result->fetchArray(SQLITE3_ASSOC);
-        
-                if ($user) {
-                    echo $twig->render('pages/editUser.html.twig', [
-                        'user' => $user  
-                    ]);
-                } 
-                else {
-                    http_response_code(404);
-                    echo $twig->render('pages/cart.html.twig');
-                }
-            }
+            error_log('insifr case');
+            $username=$_POST['edit'];
+            error_log($_POST['edit']);
+            $userDB= new userDB();
+            $user=$userDB->getUserByName($username);
+            error_log(print_r($user, true));  
+            echo $twig->render('pages/editUser.html.twig',['user'=>$user]);
             break;
 
         case '/update/single/delete':
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userID'])) 
-            {
-                $userID = (int)$_POST['user_id'];    
+            error_log('inside delete case');
+            $username=$_POST['delete'];
+            $userDB= new userDB();
+            $user=$userDB->getUserByName($username);
+            echo $twig->render('pages/deleteUser.html.twig',['user'=>$user]);
+            break;
 
-                $stmr = $db->prepare('DELETE FROM Users WHERE id = :id');
-                $stmr->bindValue(':id', $userID, SQLITE3_INTEGER);
-                $result = $stmr->execute();
-                if ($result) 
-                {
-                    error_log('Did delete');
-                    header('Location: /update/users');
-                    
-                } 
-                else 
-                {
-                    error_log('cant delete');
-                    header('Location: /error');
-                    exit;
-                }
-            }
+        case '/update/single/save':
+            $userDB = new userDB();
+            $userID = $_POST['id'];
+            $user= $userDB->getUserByIDobj($userID);
+            $user->setFullname($_POST['fullname']);
+            $user->setEmail($_POST['email']);
+            $user->setDOB($_POST['dob']);
+
+            $userDB->updateUser($user);
+            header('Location: /profile');
             break;
             
+        case '/update/single/deleteUser':
+            error_log('inside delerte single log user');
+            $userDB = new userDB();
+            $userID = $_POST['id'];
+            $result = $userDB->deleteUser($userID);
+            if ($result) 
+            {
+                error_log('delete record');
+                header('Location: /profile');
+            } 
+            else 
+            {
+                error_log('wrong');
+                header('Location: /cart');
+            }
+            break;
 
         case '/logout':
             unset($_SESSION['user']);

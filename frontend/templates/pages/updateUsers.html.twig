@@ -28,15 +28,13 @@
             <td>{{ user.dob }}</td>
             <td>{{ user.is_seller ? 'Yes' : 'No' }}</td>
             <td>
-            <form action="/update/single/edit/{{ user.id }}" method="POST">
-                <input type="hidden" name="userID" value="{{ user.id }}">
-                <button type="submit">Edit</button>
+            <form action="/update/single/edit" method="post">
+                <button type="submit" name='edit' value="{{user.username}}">edit</button>
             </form>
             </td>            
             <td>
-            <form action="/update/single/delete" method="POST">
-                <input type="hidden" name="userID" value="{{ user.id }}">
-                <button type="submit">Delete</button>
+            <form action="/update/single/delete" method="post">
+                <button type="submit" name ='delete' value="{{user.username}}">Delete</button>
             </form>
             </td>  
         </tr>

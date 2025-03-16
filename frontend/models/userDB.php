@@ -6,7 +6,7 @@ class userDB
     public function __construct() 
     {
 
-        $this->db = new SQLite3(__DIR__ . '/db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+        $this->db = new SQLite3(__DIR__ . '/../db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
         $this->makeTable();
 
         $user = new user([
@@ -120,19 +120,92 @@ class userDB
         return $result->fetchArray();
     }
 
+    public function getUserByIDobj($id)
+    {
+        $query = "SELECT * FROM Users WHERE id= :id";
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindValue(":id", $id, SQLITE3_INTEGER);
+
+        $result = $stmt->execute();
+
+        if ($result->fetchArray(SQLITE3_ASSOC)) 
+        {
+            return new user($result->fetchArray(SQLITE3_ASSOC)); 
+        } 
+        else 
+        {
+            return false; 
+        }
+    }
+
     public function login($username, $password)
     {
         $user = $this->getUserByName($username);
-        if ($user) {
-            if (password_verify($password, $user["password"])) {
+        if ($user) 
+        {
+            if (password_verify($password, $user["password"])) 
+            {
+                error_log("pass good");
                 return $this->getUserByName($username);
-            } else {
+            } 
+            else 
+            {
+                error_log(message: "pass wrong");
                 return null;
             }
-        } else {
+        } else 
+        {
+            error_log(message: "user wrong");
             return 'User doesnt exist';
         }
     }
+
+    public function getAllUsers()
+    {
+        $query = 'SELECT * FROM Users';
+        $result = $this->db->query($query);
+        $users = [];
+        
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) 
+        {
+            $users[] = $row;
+        }
+        error_log('Displaying all users');
+        return $users;
+    }
+
+    public function updateUser($user)
+    {
+        $query = "UPDATE Users SET fullname = ?, email = ?, dob = ? WHERE username = ?";
+        $stmt = $this->db->prepare($query);
+        
+        error_log($user->getFullname);
+        $stmt->bindValue(1, $user->getFullname(), SQLITE3_TEXT);
+        $stmt->bindValue(2, $user->getEmail(), SQLITE3_TEXT);
+        $stmt->bindValue(3, $user->getDob(), SQLITE3_TEXT);
+        $stmt->bindValue(4, $user->getUsername(), SQLITE3_TEXT);
+
+        $result = $stmt->execute();
+        if ($result) 
+        {
+            error_log('User updated successfully');
+        } 
+        else 
+        {
+            error_log('User update failed');
+        }    
+    }
+    public function deleteUser($userID)
+    {
+        $query = "DELETE FROM Users WHERE id = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(1, $userID, SQLITE3_INTEGER);
+        $result = $stmt->execute();
+        return $result;
+    }
+
+    
    
 }
 

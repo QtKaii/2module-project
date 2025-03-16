@@ -5,7 +5,7 @@ class user
     private $db;
     private $username;
     private $fullname;
-    private$email;
+    private $email;
     private $dob;
     private$password;
     private$is_seller;
@@ -33,6 +33,19 @@ class user
             return false;
         }
     }
+
+    public function getId($db) {
+        $query = "SELECT id FROM Users WHERE username = :username";
+        $stmt = $db->prepare($query);
+        $stmt->bindValue(':username', $this->username, SQLITE3_TEXT);
+        $result = $stmt->execute();
+        
+        if ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+            return $row['id'];
+        }
+        
+        return null; 
+    }
     
     public function setAdmin()
     {
@@ -49,9 +62,19 @@ class user
         return $this->username;
     }
 
+    public function setUsername($str)
+    {
+        $this->username = $str; 
+    }
+
     public function getFullname()
     {
         return $this->fullname;
+    }
+
+    public function setFullname($str)
+    {
+        $this->fullname=$str;
     }
 
     public function getEmail()
@@ -59,9 +82,19 @@ class user
         return $this->email;
     }
 
+    public function setEmail($str)
+    {
+        $this->email=$str;
+    }
+
     public function getDob()
     {
         return $this->dob;
+    }
+
+    public function setDOB($str)
+    {
+        $this->dob=$str;
     }
 
     public function getPassword()

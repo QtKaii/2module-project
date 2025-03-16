@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit User{% endblock %}
+{% block title %}Delete User{% endblock %}
 
 {% block content %}
 <h2>Edit User</h2>
-<form action="/update/single/save" method="post">
+<form action="/update/single/deleteUser" method="post">
     <div>
         <table>
             <tr>
@@ -24,7 +24,7 @@
         </table>
     </div>
     <div>
-        <button type="submit" >Save Changes</button>
+        <button type="submit" >Delete</button>
     </div>
 </form>
 {% endblock %}
