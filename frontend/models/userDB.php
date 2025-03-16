@@ -5,9 +5,8 @@ class userDB
     private $db;
     public function __construct() 
     {
-        $db= new SQLite3(__DIR__ . '/db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
 
-        $this->db = $db;
+        $this->db = new SQLite3(__DIR__ . '/db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
         $this->makeTable();
 
         $user = new user([

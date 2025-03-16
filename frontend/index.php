@@ -12,7 +12,7 @@ require_once __DIR__ . '/models/userDB.php';
 
 session_start();
 
-$db= new SQLite3(__DIR__ . '/db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+$userDB= new userDB();
 
 //$userAPI = new user($db);
 
