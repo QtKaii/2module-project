@@ -52,17 +52,6 @@ try {
             $is_seller=$_POST['seller-toggle'];
 
             $user= new user($username, $fullname, $email, $dob, $password, $is_seller);
-            $user->makeTable()
-            if ($password==$confirmPassword)
-            {
-            $user = $userAPI->makeUser($username,$fullname,$email,$dob,$password,$is_seller);
-                header('location: /login');
-            }
-            else
-            {
-                $_SESSION['ERROR'] = "Your Passwords did not match!";
-                header('location: /register');
-            }
             break;
 
         case '/api/user/login':
