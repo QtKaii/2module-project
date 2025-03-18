@@ -2,28 +2,29 @@
 
 class comment
 {
-    private $comment_id;
-    private $user_id;
-    private $product_id;
+    private $usercomment;
+    private $userID;
+    private $productID;
 
-    public function __construct($userID, $commentID, $productID)
+    public function __construct($userID, $productID, $usercomment)
     {
-        $this->user_id = $userID;
-        $this->comment_id = $commentID;
-        $this->product_id = $productID;
+        $this->userID = $userID;
+        $this->productID = $productID;
+        $this->usercomment = $usercomment;
     }
-    public function get_comment_id()
+    public function getcomment()
     {
-        return $this->comment_id;
+        return $this->usercomment;
     }
-    public function get_user_id()
+    public function getuserID()
     {
-        return $this->user_id;
+        return $this->userID;
     }
-    public function get_product_id()
+    public function getproductID()
     {
-        return $this->product_id;
+        return $this->productID;
     }
+    
 }
 
 ?>

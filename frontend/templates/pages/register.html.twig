@@ -69,7 +69,8 @@
             'label': 'Are you a seller?',
             'type': 'toggle',
             'show_error': true,
-            'required': false
+            'required': false,
+            'value': form.seller_toggle.value is defined ? form.seller_toggle.value : 0
         } %}
 
         <div class="text-sm">

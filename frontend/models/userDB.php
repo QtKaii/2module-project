@@ -157,7 +157,7 @@ class userDB
         } else 
         {
             error_log(message: "user wrong");
-            return 'User doesnt exist';
+            return false;
         }
     }
 

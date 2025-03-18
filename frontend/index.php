@@ -55,7 +55,6 @@ try {
         case '/api/user/login':
             $username =$_POST['username'];
             $password =$_POST['password'];
-
             $userDB= new userDB();
             $userlogin = $userDB->login($username, $password);
 
@@ -127,6 +126,16 @@ try {
                 error_log('wrong');
                 header('Location: /cart');
             }
+            break;
+
+
+        case '/submit/comment':
+            $usercomment= $_POST['comment'];
+            $username=$_SESSION['username'];
+            $productID=$_POST['productID'];
+            $comment = new comment($userID, $productID, $usercomment);
+            $commentDB=new commentDB();
+            $commentRecord= $commentDB->makeRecord($comment);
             break;
 
         case '/logout':
