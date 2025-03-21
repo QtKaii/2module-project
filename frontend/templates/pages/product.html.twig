@@ -47,16 +47,17 @@
                     {{ "Enter Comment" }}
                 </p>
                 <br>
-                <form action="" method="POST">
-                <div class="mb-8">
-                    <textarea name="comment" class="border rounded-lg p-2 w-full" placeholder="Type your comment" required></textarea>
-                {% include 'components/button.html.twig' with 
-                {
-                    'text': 'comments',
-                    'style': 'primary',
-                    'type': 'button'
-                } %}
-                </div>
+                <form action="/submit/comment" method="POST">
+                    <div class="mb-8">
+                        <textarea name="comment" class="border rounded-lg p-2 w-full" placeholder="Type your comment" required></textarea>
+                        <input type='hidden' name="productID" value='{{ product.id }}'
+                    </div>
+                    
+                    {% include 'components/button.html.twig' with {
+                        'text': 'Submit Comment',
+                        'style': 'primary',
+                        'type': 'submit'
+                    } %} 
                 </form>
             </div>
         </div>

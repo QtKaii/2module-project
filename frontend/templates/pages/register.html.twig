@@ -6,7 +6,7 @@
 <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <h1 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create Account</h1>
     
-    <form class="mt-8 space-y-6" method="post" action='api/user/create'>
+    <form class="mt-8 space-y-6" method="post" action='api/user/create' onsubmit="return passwordCheck()">
         {% include 'components/form-input.html.twig' with {
             'name': 'username',
             'placeholder': 'Username',
@@ -34,6 +34,7 @@
 
         {% include 'components/form-input.html.twig' with {
             'name': 'password',
+            'id': 'password',
             'type': 'password',
             'placeholder': 'Password',
             'required': true,
@@ -42,18 +43,34 @@
 
         {% include 'components/form-input.html.twig' with {
             'name': 'password_confirm',
+            'id': 'password_confirm',
             'type': 'password',
             'placeholder': 'Confirm Password',
             'required': true,
             'context': 'register'
         } %}
-
+        <script>
+            function passwordChek() 
+            {
+                var password = document.getElementById('password').value;
+                var passwordConfirm = document.getElementById('password_confirm').value;
+                
+                if (password !== passwordConfirm) 
+                {
+                    alert('password mismastch');
+                    return false;
+                }
+                
+                return true;
+            }
+        </script>
         {% include 'components/form-input.html.twig' with {
             'name': 'seller-toggle',
             'label': 'Are you a seller?',
             'type': 'toggle',
             'show_error': true,
-            'required': false
+            'required': false,
+            'value': form.seller_toggle.value is defined ? form.seller_toggle.value : 0
         } %}
 
         <div class="text-sm">

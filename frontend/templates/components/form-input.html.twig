@@ -5,6 +5,7 @@
                 type="checkbox"
                 name="{{ name }}"
                 id="{{ name }}"
+                value="1"
                 {% if required|default(false) %}required{% endif %}
                 {% if value is defined and value %}checked{% endif %}
                 class="sr-only peer"
