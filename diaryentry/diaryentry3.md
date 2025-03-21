@@ -1,4 +1,4 @@
-# Diary entry 1
+# Diary entry 3
 # Group 5: 21-2-2024
 
 ### Pranav Joseph Tossy, B00158966
