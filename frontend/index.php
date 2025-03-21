@@ -7,12 +7,17 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 require_once __DIR__ . '/models/user.php';
+require_once __DIR__ . '/models/wishlist.php';
+require_once __DIR__ . '/models/wishlistDB.php';
 require_once __DIR__ . '/models/userDB.php';
 
 
 session_start();
 
 $userDB= new userDB();
+
+$userWishlist= new wishlist($db);
+
 
 //$userAPI = new user($db);
 
@@ -45,7 +50,6 @@ try {
     switch ($path) 
     {
         case '/api/user/create':
-
             $user= new user($_POST);
             $userDB= new userDB();
             $userDB->makeUser($user);
@@ -153,6 +157,26 @@ try {
                 header('Location: /error'); // Redirect to an error page or another page if the user is not an admin
             }
             break;
+
+        case '/wishlist':
+            if (isset($_SESSION['user'])) 
+            {
+                $userId = $_SESSION['user']['id'];
+                $wishlistDB = new wishlistDB($db);  
+                $wishlistItems = $wishlistDB->getWishlistByUser($userId); 
+                echo $twig->render('pages/wishlist.html.twig', [
+                    'wishlistItems' => $wishlistItems,
+                    'current_page' => 'wishlist'
+                ]);
+            } 
+            else 
+            {
+                header('Location: /login'); 
+            }
+            break;
+            
+            
+    
 
 
         case '/profile':
