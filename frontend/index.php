@@ -7,25 +7,19 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 require_once __DIR__ . '/models/user.php';
-<<<<<<< HEAD
 require_once __DIR__ . '/models/wishlist.php';
-=======
+require_once __DIR__ . '/models/wishlistDB.php';
 require_once __DIR__ . '/models/userDB.php';
 
->>>>>>> views-auth
 
 session_start();
 
 $userDB= new userDB();
 
-<<<<<<< HEAD
-$userAPI = new user($db);
 $userWishlist= new wishlist($db);
 
 
-=======
 //$userAPI = new user($db);
->>>>>>> views-auth
 
 // enable error reporting for debugging
 error_reporting(E_ALL);
@@ -56,31 +50,10 @@ try {
     switch ($path) 
     {
         case '/api/user/create':
-<<<<<<< HEAD
-            $username=$_POST['username'];
-            $fullname=$_POST['name'];
-            $email=$_POST['email'];          
-            $dob=$_POST['dob'];
-            $password=$_POST['password'];
-            $confirmPassword=$_POST['password_confirm'];
-            $is_seller=$_POST['seller-toggle'];
-            if ($password==$confirmPassword)
-            {
-                $user = $userAPI->makeUser($username,$fullname,$email,$dob,$password,$is_seller);
-                header('location: /login');
-            }
-            else
-            {
-                $_SESSION['ERROR'] = "Your Passwords did not match!";
-                header('location: /register');
-            }
-=======
-
             $user= new user($_POST);
             $userDB= new userDB();
             $userDB->makeUser($user);
             header('Location: /login');
->>>>>>> views-auth
             break;
 
         case '/api/user/login':
@@ -184,6 +157,26 @@ try {
                 header('Location: /error'); // Redirect to an error page or another page if the user is not an admin
             }
             break;
+
+        case '/wishlist':
+            if (isset($_SESSION['user'])) 
+            {
+                $userId = $_SESSION['user']['id'];
+                $wishlistDB = new wishlistDB($db);  
+                $wishlistItems = $wishlistDB->getWishlistByUser($userId); 
+                echo $twig->render('pages/wishlist.html.twig', [
+                    'wishlistItems' => $wishlistItems,
+                    'current_page' => 'wishlist'
+                ]);
+            } 
+            else 
+            {
+                header('Location: /login'); 
+            }
+            break;
+            
+            
+    
 
 
         case '/profile':

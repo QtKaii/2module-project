@@ -25,12 +25,6 @@ class wishlist {
         $this->productId = $productId;
     }
 
-    public function saveToDatabase($db) {
-        $stmt = $db->prepare("INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)");
-        $stmt->bindValue(1, $this->userId, SQLITE3_TEXT);
-        $stmt->bindValue(2, $this->productId, SQLITE3_TEXT);
-        return $stmt->execute();
-    }
 }
 
 
