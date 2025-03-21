@@ -17,6 +17,7 @@ $userAPI = new user($db);
 $userWishlist= new wishlist($db);
 
 
+
 // enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -48,7 +49,7 @@ try {
         case '/api/user/create':
             $username=$_POST['username'];
             $fullname=$_POST['name'];
-            $email=$_POST['email'];
+            $email=$_POST['email'];          
             $dob=$_POST['dob'];
             $password=$_POST['password'];
             $confirmPassword=$_POST['password_confirm'];
