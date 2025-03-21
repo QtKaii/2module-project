@@ -15,7 +15,7 @@ require_once __DIR__ . '/models/userDB.php';
 session_start();
 
 $userDB= new userDB();
-
+ 
 
 //$userAPI = new user($db);
 
@@ -217,13 +217,15 @@ try {
                 'error' => isset($_SESSION['ERROR']) ? $_SESSION['ERROR'] : null
             ]);
 
-            if (isset($_SESSION['ERROR'])) { 
+            if (isset($_SESSION['ERROR'])) 
+            { 
                 unset($_SESSION['ERROR']);
             } 
 
             break;
 
         case '/order':
+
             // render order summary page
             echo $twig->render('pages/ordersummary.html.twig', [
                 'current_page' => 'order'
