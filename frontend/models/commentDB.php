@@ -1,7 +1,7 @@
 <?php
 
 class commentDB
-{
+{ 
     private $db;
     public function __construct()
     {
@@ -19,7 +19,6 @@ class commentDB
         $stmt->bindValue(3, $comment->getcomment(), SQLITE3_TEXT);
 
         $stmt->execute();
-        return $this->db->lastInsertRowID();
     }
     private function makeTable()
     {

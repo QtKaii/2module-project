@@ -5,7 +5,7 @@ class comment
     private $usercomment;
     private $userID;
     private $productID;
-
+ 
     public function __construct($userID, $productID, $usercomment)
     {
         $this->userID = $userID;
