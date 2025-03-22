@@ -184,7 +184,7 @@ class userDB
         $stmt->bindValue(1, $user->getFullname(), SQLITE3_TEXT);
         $stmt->bindValue(2, $user->getEmail(), SQLITE3_TEXT);
         $stmt->bindValue(3, $user->getDob(), SQLITE3_TEXT);
-        $stmt->bindValue(4, $user->getUsername(), SQLITE3_TEXT);
+        $stmt->bindValue(4, $user->getUsername(), SQLITE3_TEXT); 
 
         $result = $stmt->execute();
         if ($result) 
