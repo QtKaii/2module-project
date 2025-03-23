@@ -16,7 +16,6 @@ session_start();
 
 $userDB= new userDB();
 
-$userWishlist= new wishlist($db);
 
 
 //$userAPI = new user($db);
@@ -162,7 +161,7 @@ try {
             if (isset($_SESSION['user'])) 
             {
                 $userId = $_SESSION['user']['id'];
-                $wishlistDB = new wishlistDB($db);  
+                $wishlistDB = new wishlistDB();  
                 $wishlistItems = $wishlistDB->getWishlistByUser($userId); 
                 echo $twig->render('pages/wishlist.html.twig', [
                     'wishlistItems' => $wishlistItems,
