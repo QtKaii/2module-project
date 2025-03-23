@@ -175,18 +175,38 @@ class userDB
         return $users;
     }
 
-    public function updateUser($user)
+    public function updateUser($user, $_POSTDATA)
     {
-        $query = "UPDATE Users SET fullname = ?, email = ?, dob = ? WHERE username = ?";
+        /*
+        error_log(print_r($user, true));
+        error_log($_POSTDATA['fullname']);
+        error_log($_POSTDATA['email']);
+        error_log($_POSTDATA['dob']);
+        */
+
+        $user->setUsername($_POSTDATA['username']);
+        $user->setFullname($_POSTDATA['fullname']);
+        $user->setEmail($_POSTDATA['email']);
+        $user->setDOB($_POSTDATA['dob']);
+
+        /*
+        error_log($user->getFullname());
+        error_log($user->getEmail());
+        error_log($user->getDob());
+        error_log($_POSTDATA['id']);
+        */
+
+        $query = "UPDATE Users SET username = ?, fullname = ?, email = ?, dob = ? WHERE id = ?";
         $stmt = $this->db->prepare($query);
         
-        error_log($user->getFullname);
-        $stmt->bindValue(1, $user->getFullname(), SQLITE3_TEXT);
-        $stmt->bindValue(2, $user->getEmail(), SQLITE3_TEXT);
-        $stmt->bindValue(3, $user->getDob(), SQLITE3_TEXT);
-        $stmt->bindValue(4, $user->getUsername(), SQLITE3_TEXT);
+        $stmt->bindValue(1, $user->getUsername(), SQLITE3_TEXT);
+        $stmt->bindValue(2, $user->getFullname(), SQLITE3_TEXT);
+        $stmt->bindValue(3, $user->getEmail(), SQLITE3_TEXT);
+        $stmt->bindValue(4, $user->getDob(), SQLITE3_TEXT);
+        $stmt->bindValue(5, $_POSTDATA['id'], SQLITE3_INTEGER); 
 
         $result = $stmt->execute();
+
         if ($result) 
         {
             error_log('User updated successfully');
@@ -194,8 +214,12 @@ class userDB
         else 
         {
             error_log('User update failed');
-        }    
+        }   
+
+        //error_log(new userDB->getUserByID($user->getId()));
+            
     }
+
     public function deleteUser($userID)
     {
         $query = "DELETE FROM Users WHERE id = ?";

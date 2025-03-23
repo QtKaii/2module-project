@@ -2,9 +2,8 @@
 
 class user
 {
-    private $db;
     private $username;
-    private $fullname;
+    private $fullname; 
     private $email;
     private $dob;
     private$password;
