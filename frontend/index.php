@@ -18,21 +18,21 @@ require_once __DIR__ . '/models/commentDB.php';
     [
         'id' => 1,
         'title' => 'Product 1',
-        'description' => 'Description for Product 1. This is a great product!',
+        'description' => 'Description for Product 1.this is a great product',
         'price' => 29.99,
         'image' => ''
     ],
     [
         'id' => 2,
         'title' => 'Product 2',
-        'description' => 'Description for Product 2. Another amazing product!',
+        'description' => 'Description for Product 2. Anothwer amazing product',
         'price' => 49.99,
         'image' => ''
     ],
     [
         'id' => 3,
-        'title' => 'Product 3',
-        'description' => 'Description for Product 3. You will love this product!',
+        'title' => 'product 3',
+        'description' => 'Description for Product 3. You will love this',
         'price' => 79.99,
         'image' => ''
     ]
