@@ -41,5 +41,22 @@ class commentDB
             error_log('probalbly an error with the cpmment beign too long?');
         }
     }
+
+    public function getCommentsByProductID($productId)
+    {
+        $query = "SELECT * FROM Comments WHERE productID = :productID";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':productID', $productId, SQLITE3_INTEGER);
+        
+        $result = $stmt->execute();
+        $comments = [];
+        
+        while ($row = $result->fetchArray(SQLITE3_ASSOC))
+        {
+            $comments[] = $row; 
+        }
+
+        return $comments;  
+    }
 }
 ?>

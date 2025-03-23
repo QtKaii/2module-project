@@ -10,8 +10,35 @@ require_once __DIR__ . '/models/user.php';
 require_once __DIR__ . '/models/wishlist.php';
 require_once __DIR__ . '/models/wishlistDB.php';
 require_once __DIR__ . '/models/userDB.php';
+require_once __DIR__ . '/models/comment.php';
+require_once __DIR__ . '/models/commentDB.php';
 
- 
+ // Dummy product data
+ $products = [
+    [
+        'id' => 1,
+        'title' => 'Product 1',
+        'description' => 'Description for Product 1. This is a great product!',
+        'price' => 29.99,
+        'image' => ''
+    ],
+    [
+        'id' => 2,
+        'title' => 'Product 2',
+        'description' => 'Description for Product 2. Another amazing product!',
+        'price' => 49.99,
+        'image' => ''
+    ],
+    [
+        'id' => 3,
+        'title' => 'Product 3',
+        'description' => 'Description for Product 3. You will love this product!',
+        'price' => 79.99,
+        'image' => ''
+    ]
+];
+
+
 session_start();
 
 $userDB= new userDB();
@@ -104,11 +131,10 @@ try {
             $userDB = new userDB();
             $userID = $_POST['id'];
             $user= $userDB->getUserByIDobj($userID);
-            $user->setFullname($_POST['fullname']);
-            $user->setEmail($_POST['email']);
-            $user->setDOB($_POST['dob']);
+            
+            //error_log(print_r($user, true));
 
-            $userDB->updateUser($user);
+            $userDB->updateUser($user, $_POST);
             header('Location: /profile');
             break;
         
@@ -133,11 +159,13 @@ try {
 
         case '/submit/comment':
             $usercomment= $_POST['comment'];
-            $username=$_SESSION['username'];
+            $userID=$_SESSION['user']['id'];
+            error_log(print_r($userID, true));
             $productID=$_POST['productID'];
             $comment = new comment($userID, $productID, $usercomment);
             $commentDB=new commentDB();
             $commentRecord= $commentDB->makeRecord($comment);
+            header('Location: /');
             break;
 
         case '/logout':
@@ -152,7 +180,7 @@ try {
             } 
             else 
             {
-                header('Location: /error'); // Redirect to an error page or another page if the user is not an admin
+                header('Location: /error'); 
             }
             break;
 
@@ -173,10 +201,7 @@ try {
             }
             break;
             
-            
-    
-
-
+ 
         case '/profile':
             echo $twig->render('pages/profile.html.twig');
             break;
@@ -186,6 +211,7 @@ try {
             // render home page with product list
             echo $twig->render('pages/index.html.twig', [
                 'current_page' => 'home',
+                'products' => $products 
             ]);
             break;
         case '/cart':
@@ -255,11 +281,14 @@ try {
                     return $p['id'] === $productId;
                 });
                 
-                if (!empty($product)) {
-                    // render product detail page if found
+                if (!empty($product)) 
+                {
+                    $commentDB = new commentDB();
+                    $comments = $commentDB->getCommentsByProductID($productId);
                     $product = reset($product);
                     echo $twig->render('pages/product.html.twig', [
-                        'product' => $product
+                        'product' => $product,
+                        'comments' => $comments
                     ]);
                 } else {
                     // show 404 if product not found
