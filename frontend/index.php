@@ -174,9 +174,6 @@ try {
             }
             break;
             
-            
-    
-
 
         case '/profile':
             echo $twig->render('pages/profile.html.twig');
