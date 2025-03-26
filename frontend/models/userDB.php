@@ -144,6 +144,7 @@ class userDB
         $user = $this->getUserByName($username);
         if ($user) 
         {
+            error_log($user["password"]);
             if (password_verify($password, $user["password"])) 
             {
                 error_log("pass good");

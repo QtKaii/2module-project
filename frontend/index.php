@@ -236,9 +236,9 @@ try {
 
         case '/register':
             // render registration page
-            // if error header exists pass to page
-
+            
             echo $twig->render('pages/register.html.twig', [
+                // if error header exists pass to page
                 'current_page' => 'register',
                 'error' => isset($_SESSION['ERROR']) ? $_SESSION['ERROR'] : null
             ]);
