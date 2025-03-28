@@ -7,6 +7,29 @@ class commentDB
     {
         $this->db = new SQLite3(__DIR__ . '/../db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
         $this->makeTable();
+        $this->addInitialComments();
+    }
+
+    private function addInitialComments()
+    {
+        // Check if comments exist first
+        $result = $this->db->query("SELECT COUNT(*) as count FROM Comments");
+        $count = $result->fetchArray()['count'];
+        
+        if ($count === 0) {
+            $initialComments = [
+                ['userID' => 1, 'productID' => 1, 'comment' => 'Beautiful coin, exactly as described. The toning is gorgeous!'],
+                ['userID' => 2, 'productID' => 1, 'comment' => 'Great addition to my collection. Fast shipping too.'],
+                ['userID' => 2, 'productID' => 2, 'comment' => 'The pocket watch keeps perfect time. Love the patina!'],
+                ['userID' => 3, 'productID' => 3, 'comment' => 'This diner clock looks amazing in my retro-themed kitchen!'],
+                ['userID' => 1, 'productID' => 4, 'comment' => 'All three cameras work perfectly. A great vintage set.']
+            ];
+
+            foreach ($initialComments as $commentData) {
+                $comment = new comment($commentData['userID'], $commentData['productID'], $commentData['comment']);
+                $this->makeRecord($comment);
+            }
+        }
     }
 
     public function makeRecord($comment)

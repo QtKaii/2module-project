@@ -26,13 +26,27 @@
                     </span>
                 </div>
                 
-                {% include 'components/button.html.twig' with {
-                    'text': 'Add to Cart',
-                    'style': 'primary',
-                    'type': 'button'
-                } %}
+                <div class="flex gap-4 mb-4">
+                    <form action="/cart/add" method="POST">
+                        <input type="hidden" name="productId" value="{{ product.id }}">
+                        {% include 'components/button.html.twig' with {
+                            'text': 'Add to Cart',
+                            'style': 'primary',
+                            'type': 'submit'
+                        } %}
+                    </form>
 
-                <a href="/" class="mt-4 inline-block text-indigo-600 hover:text-indigo-500">
+                    <form action="/wishlist/add" method="POST">
+                        <input type="hidden" name="productId" value="{{ product.id }}">
+                        {% include 'components/button.html.twig' with {
+                            'text': 'Add to Wishlist',
+                            'style': 'secondary',
+                            'type': 'submit'
+                        } %}
+                    </form>
+                </div>
+
+                <a href="/" class="inline-block text-indigo-600 hover:text-indigo-500">
                     ← Back to Products
                 </a>
             </div>

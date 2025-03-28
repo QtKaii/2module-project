@@ -12,40 +12,20 @@
             </div>
 
             <ul role="list" class="divide-y divide-white">
-                {% include 'components/wishlist-item.html.twig' with {
-                    'title': 'Product 1',
-                    'description': 'Pwejdcnerijcviojn'
-                } %}
-
-                {% include 'components/wishlist-item.html.twig' with {
-                    'title': 'Product 2',
-                    'description': 'Pwejdcnerijcviojn'
-                } %}
-
-                {% include 'components/wishlist-item.html.twig' with {
-                    'title': 'Product 3',
-                    'description': 'Pwejdcnerijcviojn'
-                } %}
-
-                {% include 'components/wishlist-item.html.twig' with {
-                    'title': 'Product 4',
-                    'description': 'Pwejdcnerijcviojn'
-                } %}
-
-                {% include 'components/wishlist-item.html.twig' with {
-                    'title': 'Product 5',
-                    'description': 'Pwejdcnerijcviojn'
-                } %}
-
-                {% include 'components/wishlist-item.html.twig' with {
-                    'title': 'Product 6',
-                    'description': 'Pwejdcnerijcviojn'
-                } %}
-
-                {% include 'components/wishlist-item.html.twig' with {
-                    'title': 'Product 7',
-                    'description': 'Pwejdcnerijcviojn'
-                } %}
+                {% if wishlistItems is empty %}
+                    <li class="p-4 text-center text-gray-600">
+                        Your wishlist is empty
+                    </li>
+                {% else %}
+                    {% for item in wishlistItems %}
+                        {% include 'components/wishlist-item.html.twig' with {
+                            'id': item.wishlistid,
+                            'title': item.product.title,
+                            'description': item.product.description,
+                            'price': item.product.price
+                        } %}
+                    {% endfor %}
+                {% endif %}
             </ul>
         </div>
     </section>

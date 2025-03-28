@@ -12,31 +12,9 @@ require_once __DIR__ . '/models/wishlistDB.php';
 require_once __DIR__ . '/models/userDB.php';
 require_once __DIR__ . '/models/comment.php';
 require_once __DIR__ . '/models/commentDB.php';
-
- // Dummy product data
- $products = [
-    [
-        'id' => 1,
-        'title' => 'Product 1',
-        'description' => 'Description for Product 1.this is a great product',
-        'price' => 29.99,
-        'image' => ''
-    ],
-    [
-        'id' => 2,
-        'title' => 'Product 2',
-        'description' => 'Description for Product 2. Anothwer amazing product',
-        'price' => 49.99,
-        'image' => ''
-    ],
-    [
-        'id' => 3,
-        'title' => 'product 3',
-        'description' => 'Description for Product 3. You will love this',
-        'price' => 79.99,
-        'image' => ''
-    ]
-];
+require_once __DIR__ . '/models/Product.php';
+require_once __DIR__ . '/models/ProductDB.php';
+require_once __DIR__ . '/models/createSales.php';
 
 
 session_start();
@@ -188,8 +166,16 @@ try {
             if (isset($_SESSION['user'])) 
             {
                 $userId = $_SESSION['user']['id'];
-                $wishlistDB = new wishlistDB();  
-                $wishlistItems = $wishlistDB->getWishlistByUser($userId); 
+                $wishlistDB = new wishlistDB();
+                $productDB = new ProductDB();
+                $wishlistItems = $wishlistDB->getWishlistByUser($userId);
+                
+                // Get product details for each wishlist item
+                foreach ($wishlistItems as &$item) {
+                    $product = $productDB->getProductById($item['productid']);
+                    $item['product'] = $product;
+                }
+                
                 echo $twig->render('pages/wishlist.html.twig', [
                     'wishlistItems' => $wishlistItems,
                     'current_page' => 'wishlist'
@@ -200,6 +186,47 @@ try {
                 header('Location: /login'); 
             }
             break;
+
+        case '/wishlist/add':
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+            
+            $userId = $_SESSION['user']['id'];
+            $productId = $_POST['productId'];
+            $wishlistDB = new wishlistDB();
+            $wishlistDB->insertValues($productId, $userId);
+            header('Location: /wishlist');
+            break;
+
+        case '/wishlist/remove':
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+            
+            $wishlistId = $_POST['wishlistId'];
+            $wishlistDB = new wishlistDB();
+            $wishlistDB->deleteWishlistItem($wishlistId);
+            header('Location: /wishlist');
+            break;
+
+        case '/cart/add':
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+            
+            $userId = $_SESSION['user']['id'];
+            $productId = $_POST['productId'];
+            $productDB = new ProductDB();
+            $product = $productDB->getProductById($productId);
+            
+            $createSales = new createSales();
+            $createSales->insertValues($product['price'], $userId, $productId);
+            header('Location: /cart');
+            break;
             
  
         case '/profile':
@@ -208,17 +235,49 @@ try {
 
         case '/':
         case '/index':
-            // render home page with product list
+            // render home page with product list from database
+            $productDB = new ProductDB();
+            $products = $productDB->getAllProducts();
             echo $twig->render('pages/index.html.twig', [
                 'current_page' => 'home',
-                'products' => $products 
+                'products' => $products
             ]);
             break;
         case '/cart':
-            // render shopping cart page
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+            
+            $userId = $_SESSION['user']['id'];
+            $createSales = new createSales();
+            $productDB = new ProductDB();
+
+            // Get all sales for the user
+            $cartItems = $createSales->getSalesByUserId($userId);
+            
+            // Add product details to each cart item
+            foreach ($cartItems as &$item) {
+                $product = $productDB->getProductById($item['productid']);
+                $item['product'] = $product;
+            }
+
             echo $twig->render('pages/cart.html.twig', [
-                'current_page' => 'cart'
+                'current_page' => 'cart',
+                'cartItems' => $cartItems
             ]);
+            break;
+
+        case '/cart/remove':
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+            
+            $salesId = $_POST['salesId'];
+            $createSales = new createSales();
+            $createSales->deleteSale($salesId);
+            header('Location: /cart');
             break;
         case '/wishlist':
             // render wishlist page
@@ -277,15 +336,13 @@ try {
             if (preg_match('/^\/product\/(\d+)$/', $path, $matches)) {
                 $productId = (int)$matches[1];
                 // find product by id
-                $product = array_filter($products, function($p) use ($productId) {
-                    return $p['id'] === $productId;
-                });
+                $productDB = new ProductDB();
+                $product = $productDB->getProductById($productId);
                 
-                if (!empty($product)) 
+                if ($product) 
                 {
                     $commentDB = new commentDB();
                     $comments = $commentDB->getCommentsByProductID($productId);
-                    $product = reset($product);
                     echo $twig->render('pages/product.html.twig', [
                         'product' => $product,
                         'comments' => $comments

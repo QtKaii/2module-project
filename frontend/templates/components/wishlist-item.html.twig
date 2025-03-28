@@ -1,8 +1,27 @@
-<li class="flex justify-between gap-x-6 py-5 bg-gray">
+<li class="flex justify-between gap-x-6 py-5 px-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
     <div class="flex min-w-0 gap-x-4">
         <div class="min-w-0 flex-auto">
-            <p class="text-sm/6 font-semibold text-white">{{ title }}</p>
-            <p class="mt-1 truncate text-xs/5 text-white">{{ description }}</p>
+            <p class="text-lg font-semibold text-gray-900">{{ title }}</p>
+            <p class="mt-1 text-sm text-gray-600">{{ description }}</p>
+            <p class="mt-2 text-blue-600 font-bold">${{ price }}</p>
         </div>
+    </div>
+    <div class="flex items-center gap-4">
+        <form action="/cart/add" method="POST">
+            <input type="hidden" name="productId" value="{{ id }}">
+            {% include 'components/button.html.twig' with {
+                'text': 'Add to Cart',
+                'style': 'primary',
+                'type': 'submit'
+            } %}
+        </form>
+        <form action="/wishlist/remove" method="POST">
+            <input type="hidden" name="wishlistId" value="{{ id }}">
+            {% include 'components/button.html.twig' with {
+                'text': 'Remove',
+                'style': 'danger',
+                'type': 'submit'
+            } %}
+        </form>
     </div>
 </li>
