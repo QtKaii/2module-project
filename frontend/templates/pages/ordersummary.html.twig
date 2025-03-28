@@ -3,34 +3,44 @@
 {% block title %}Thank You for Ordering!{% endblock %}
 
 {% block content %}
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-lg">
-        <h1 class="mt-10 text-center text-3xl font-bold tracking-tight text-green-600">Thank You for Your Order!</h1>
-        
-        <p class="mt-4 text-center text-lg text-gray-700">
-            We’ve successfully received your order and are currently processing it. You will receive an email confirmation shortly with the details of your purchase.
-        </p>
-    </div>
-
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-2xl">
-        <div class="flex flex-col gap-6">
-            {% set total = 0 %}
-            {% set products = [
-                {'name': 'Product A', 'price': 29.99},
-                {'name': 'Product B', 'price': 49.99},
-                {'name': 'Product C', 'price': 19.99}
-            ] %}
-
-            {% for product in products %}
-                <div class="flex items-center justify-between bg-white p-4 rounded-lg shadow">
-                    <span class="text-lg font-medium text-gray-800">{{ product.name }}</span>
-                    <span class="text-lg text-gray-600">${{ product.price | number_format(2) }}</span>
+    <div class="py-8 md:py-16">
+        <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-12">
+                    <h1 class="text-3xl font-bold tracking-tight text-green-600 dark:text-green-500 mb-4">Thank You for Your Order!</h1>
+                    <p class="text-lg text-gray-700 dark:text-gray-300">
+                        We've successfully received your order and are currently processing it.
+                    </p>
                 </div>
-                {% set total = total + product.price %}
-            {% endfor %}
 
-            <div class="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow mt-4">
-                <span class="text-xl font-semibold text-gray-900">Total</span>
-                <span class="text-xl font-semibold text-green-600">${{ total | number_format(2) }}</span>
+                <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Order Summary</h2>
+                    
+                    <div class="flex flex-col gap-4">
+                        {% set total = 0 %}
+                        {% if cartItems is defined and cartItems is not empty %}
+                            {% for item in cartItems %}
+                                {% include 'components/order-summary-item.html.twig' with {
+                                    'name': item.product.title,
+                                    'description': item.product.description,
+                                    'price': item.product.price
+                                } %}
+                                {% set total = total + item.product.price %}
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mt-4 border-t-2 border-green-500">
+                            <span class="text-xl font-semibold text-gray-900 dark:text-white">Total</span>
+                            <span class="text-xl font-semibold text-green-600 dark:text-green-500">${{ total | number_format(2) }}</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <a href="/" class="inline-flex justify-center rounded-lg border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

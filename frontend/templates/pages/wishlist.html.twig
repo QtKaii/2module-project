@@ -11,7 +11,7 @@
                 </div>
             </div>
 
-            <ul role="list" class="divide-y divide-white">
+            <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700 mt-6">
                 {% if wishlistItems is empty %}
                     <li class="p-4 text-center text-gray-600">
                         Your wishlist is empty
@@ -19,7 +19,8 @@
                 {% else %}
                     {% for item in wishlistItems %}
                         {% include 'components/wishlist-item.html.twig' with {
-                            'id': item.wishlistid,
+                            'id': item.product.id,
+                            'wishlistId': item.wishlistid,
                             'title': item.product.title,
                             'description': item.product.description,
                             'price': item.product.price

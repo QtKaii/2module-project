@@ -57,6 +57,21 @@ class createSales {
         return $sales;
     }
 
+    public function getSalesByProductId($productId) {
+        $query = "SELECT * FROM sales WHERE productid = :productid";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':productid', $productId, SQLITE3_INTEGER);
+
+        $result = $stmt->execute();
+        $sales = [];
+        
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+            $sales[] = $row;
+        }
+        
+        return $sales;
+    }
+
     public function insertValues($cost, $userid, $productid) {
         $query = "
         INSERT INTO sales (cost, userid, productid)

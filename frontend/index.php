@@ -154,7 +154,7 @@ try {
         case '/update':
             if (isset($_SESSION['user']) && $_SESSION['user']['username'] == 'admin') 
             {
-                echo $twig->render('pages/update.html.twig', array('user' => $user));
+                echo $twig->render('pages/update.html.twig');
             } 
             else 
             {
@@ -310,18 +310,80 @@ try {
             break;
 
         case '/order':
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+            
+            $userId = $_SESSION['user']['id'];
+            $createSales = new createSales();
+            $productDB = new ProductDB();
 
-            // render order summary page
+            // Get all cart items before clearing
+            $cartItems = $createSales->getSalesByUserId($userId);
+            
+            // Add product details to each cart item
+            foreach ($cartItems as &$item) {
+                $product = $productDB->getProductById($item['productid']);
+                $item['product'] = $product;
+                
+                // Delete each item from cart
+                $createSales->deleteSale($item['salesid']);
+            }
+
+            // render order summary page with cart items
             echo $twig->render('pages/ordersummary.html.twig', [
-                'current_page' => 'order'
+                'current_page' => 'order',
+                'cartItems' => $cartItems
             ]);
             break;
 
+        case '/update/products':
+            if (isset($_SESSION['user']) && $_SESSION['user']['username'] == 'admin') {
+                $productDB = new ProductDB();
+                $products = $productDB->getAllProducts();
+                echo $twig->render('pages/updateProducts.html.twig', ['products' => $products]);
+            } else {
+                header('Location: /error');
+            }
+            break;
+
+        case (preg_match('/^\/update\/product\/sales\/(\d+)$/', $path, $matches) ? true : false):
+            if (isset($_SESSION['user']) && $_SESSION['user']['username'] == 'admin') {
+                // Get the product ID from the URL
+                $productId = (int)$matches[1];
+                $productDB = new ProductDB();
+                $createSales = new createSales();
+
+                $product = $productDB->getProductById($productId);
+                $sales = $createSales->getSalesByProductId($productId);
+
+                // Calculate totals
+                $totalRevenue = 0;
+                foreach ($sales as $sale) {
+                    $totalRevenue += $sale['cost'];
+                }
+                $avgPrice = count($sales) > 0 ? $totalRevenue / count($sales) : 0;
+
+                echo $twig->render('pages/productSales.html.twig', [
+                    'product' => $product,
+                    'sales' => $sales,
+                    'totalRevenue' => $totalRevenue,
+                    'avgPrice' => $avgPrice
+                ]);
+            } else {
+                header('Location: /error');
+            }
+            break;
+            
         case '/create':
-            // render create product page
-            echo $twig->render('pages/productcreation.html.twig', [
-                'current_page' => 'productcreation'
-            ]);
+            if (isset($_SESSION['user']) && $_SESSION['user']['username'] == 'admin') {
+                echo $twig->render('pages/productcreation.html.twig', [
+                    'current_page' => 'productcreation'
+                ]);
+            } else {
+                header('Location: /error');
+            }
             break;
 
         case '/created':

@@ -3,12 +3,56 @@
 {%  block title %}Profiel{% endblock %}
 
 {% block content %}
-<h1>User Profile</h1>
-<p>Username- {{ session.user.username }}</p>
-<p>Full Name- {{session.user.fullname}}</p>
-<p>Email- {{session.user.email}}</p>
-<p>Seller?- {{session.user.is_seller}}</p>
-{% if session.user.is_admin %}
-    <p>Admin?- {{session.user.is_admin}}</p>
-{% endif %}
+<div class="py-8 md:py-16">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
+                <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Profile</h3>
+                </div>
+                
+                <div class="p-6">
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Username</h4>
+                            <p class="mt-1 text-lg font-medium text-gray-900 dark:text-white">{{ session.user.username }}</p>
+                        </div>
+
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Full Name</h4>
+                            <p class="mt-1 text-lg font-medium text-gray-900 dark:text-white">{{ session.user.fullname }}</p>
+                        </div>
+
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Email</h4>
+                            <p class="mt-1 text-lg font-medium text-gray-900 dark:text-white">{{ session.user.email }}</p>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center space-x-4">
+                                {% if session.user.is_seller %}
+                                    <span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900 px-3 py-1">
+                                        <svg class="mr-1.5 h-2 w-2 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 8 8">
+                                            <circle cx="4" cy="4" r="3" />
+                                        </svg>
+                                        <span class="text-sm font-medium text-green-700 dark:text-green-400">Seller Account</span>
+                                    </span>
+                                {% endif %}
+                                
+                                {% if session.user.is_admin %}
+                                    <span class="inline-flex items-center rounded-full bg-purple-100 dark:bg-purple-900 px-3 py-1">
+                                        <svg class="mr-1.5 h-2 w-2 text-purple-500 dark:text-purple-400" fill="currentColor" viewBox="0 0 8 8">
+                                            <circle cx="4" cy="4" r="3" />
+                                        </svg>
+                                        <span class="text-sm font-medium text-purple-700 dark:text-purple-400">Admin</span>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

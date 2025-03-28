@@ -16,7 +16,7 @@
             } %}
         </form>
         <form action="/wishlist/remove" method="POST">
-            <input type="hidden" name="wishlistId" value="{{ id }}">
+            <input type="hidden" name="wishlistId" value="{{ wishlistId }}">
             {% include 'components/button.html.twig' with {
                 'text': 'Remove',
                 'style': 'danger',
