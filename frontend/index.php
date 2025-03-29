@@ -279,12 +279,6 @@ try {
             $createSales->deleteSale($salesId);
             header('Location: /cart');
             break;
-        case '/wishlist':
-            // render wishlist page
-            echo $twig->render('pages/wishlist.html.twig', [
-                'current_page' => 'wishlist'
-            ]);
-            break;
 
         case '/login':
             // render login page
@@ -327,8 +321,6 @@ try {
                 $product = $productDB->getProductById($item['productid']);
                 $item['product'] = $product;
                 
-                // Delete each item from cart
-                $createSales->deleteSale($item['salesid']);
             }
 
             // render order summary page with cart items
@@ -377,7 +369,7 @@ try {
             break;
             
         case '/create':
-            if (isset($_SESSION['user']) && $_SESSION['user']['username'] == 'admin') {
+            if (isset($_SESSION['user']) && ($_SESSION['user']['username'] == 'admin' || $_SESSION['user']['is_seller'] == 1)) {
                 echo $twig->render('pages/productcreation.html.twig', [
                     'current_page' => 'productcreation'
                 ]);
