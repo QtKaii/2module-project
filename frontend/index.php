@@ -15,6 +15,8 @@ require_once __DIR__ . '/models/commentDB.php';
 require_once __DIR__ . '/models/Product.php';
 require_once __DIR__ . '/models/ProductDB.php';
 require_once __DIR__ . '/models/createSales.php';
+require_once __DIR__ . '/models/unitTestComment.php';
+require_once __DIR__ . '/models/unitTestUser.php';
 
 
 session_start();
@@ -232,6 +234,16 @@ try {
         case '/profile':
             echo $twig->render('pages/profile.html.twig');
             break;
+
+        case '/admin/test':
+            error_log('Entered case');
+            error_log('Comment unit Test');
+            $test= new unitTestComment();
+            error_log('Comment unit Test done');  
+            error_log('User unit Test');
+            $test= new unitTestUser();
+            error_log('User unit Test done');   
+            break;     
 
         case '/':
         case '/index':
