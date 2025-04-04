@@ -1,14 +1,14 @@
 # Lab 9
 
 ### Unit Testing
-- What classes and objects will we test?
-All the "core" classes and one db class
-Test to enusure Admin obj works as intended
-Black Box for UI and UI Labels
-White Box for testing classes
-- Which need to be updated?
+#### What classes and objects will we test?
+- All the "core" classes and one db class
+- Test to enusure Admin obj works as intended
+- Black Box for UI and UI Labels
+- White Box for testing classes
+#### Which need to be updated?
 
-- Will we use Automation or write manual Unit Tests?
+#### Will we use Automation or write manual Unit Tests?
 Manuel unit tests for each
 
 
@@ -45,13 +45,13 @@ Manuel unit tests for each
 ---
 
 ### Plan Calculations for Basis Path Test
-The Order totals
-Spend within X and y? discount of -n
-Aged btw x and y? discoun of -n
+- The Order totals
+- Spend within X and y? discount of -n
+- Aged btw x and y? discoun of -n
 
 ### Plan Calculations for Equivalence Partition Test
-User Registration
-Comments
+- User Registration
+- Comments
 
 ### Validation Testing
-Validation
+- Validation(number instead of name)
