@@ -46,6 +46,12 @@ Manuel unit tests for each
 
 ### Plan Calculations for Basis Path Test
 The Order totals
+Spend within X and y? discount of -n
+Aged btw x and y? discoun of -n
 
 ### Plan Calculations for Equivalence Partition Test
+User Registration
+Comments
+
+### Validation Testing
 Validation
