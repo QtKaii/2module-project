@@ -30,8 +30,6 @@ Manuel unit tests for each
 - List all Core Requirements Completed and yet to be done.
 #### Completed
 - Sale of Products
-- User Registration
-- User Login
 - Comments
 - Wishlist
 - Cart
