@@ -17,8 +17,9 @@ Manuel unit tests for each
 ### UI Testing
 #### What features are currently implemented (e.g., minimum clicks, recoverability, etc., see Lecture 9)?
 - Consistency
-- Guidance
-- Feedback
+- Minimal Surprice
+- Recoverability
+- Guidance and Feedback
 - understandalbe path
 - Admin UI
 - Diff Users(Selleres, Buyer and Admin)
