@@ -239,11 +239,11 @@ try {
             error_log('Entered case');
             error_log('Comment unit Test');
             $test= new unitTestComment();
-            error_log('Comment unit Test done');  
+            error_log('Comment unit Test done');
             error_log('User unit Test');
             $test= new unitTestUser();
-            error_log('User unit Test done');   
-            break;     
+            error_log('User unit Test done');
+            break;
 
         case '/':
         case '/index':
@@ -398,6 +398,31 @@ try {
 
             // Create a new product from form data
             $product = new Product($_POST);
+
+            // Handle image upload
+            if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+                $uploadDir = __DIR__ . '/uploads/';
+
+                // Create directory if it doesn't exist
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                // Generate a unique filename
+                $fileExtension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                $uniqueFilename = uniqid('product_') . '.' . $fileExtension;
+                $uploadPath = $uploadDir . $uniqueFilename;
+
+                // Move the uploaded file to the uploads directory
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+                    // Set the image path in the product object
+                    $product->setImage('/uploads/' . $uniqueFilename);
+                    error_log('Image uploaded successfully: ' . $uploadPath);
+                } else {
+                    error_log('Failed to upload image');
+                }
+            }
+
             $productDB = new ProductDB();
             $productId = $productDB->createProduct($product);
 
