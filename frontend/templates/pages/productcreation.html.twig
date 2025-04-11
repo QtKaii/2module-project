@@ -11,18 +11,21 @@
                     <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Add New Product</h3>
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Create a new product listing</p>
                 </div>
-                
+
                 <div class="p-6">
                     <form method="post" action="/productcreation" class="space-y-6">
+                        {% if session.user %}
+                            <input type="hidden" name="seller_id" value="{{ session.user.id }}">
+                        {% endif %}
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Product Name</label>
-                            <input type="text" name="Product Name" id="name" required placeholder="Product Name"
+                            <input type="text" name="title" id="name" required placeholder="Product Name"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm" />
                         </div>
 
                         <div>
                             <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-                            <textarea id="description" name="Description" rows="4" required placeholder="Give product details"
+                            <textarea id="description" name="description" rows="4" required placeholder="Give product details"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm"></textarea>
                         </div>
 

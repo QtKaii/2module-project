@@ -20,7 +20,7 @@ require_once __DIR__ . '/models/createSales.php';
 session_start();
 
 $userDB= new userDB();
- 
+
 
 //$userAPI = new user($db);
 
@@ -50,7 +50,7 @@ $path = parse_url($request, PHP_URL_PATH);
 
 try {
     // handle different page routes
-    switch ($path) 
+    switch ($path)
     {
         case '/api/user/create':
             $user= new user($_POST);
@@ -76,14 +76,14 @@ try {
                 header('Location: /error');
             }
             break;
-            
+
         //shows users table
         case '/update/users':
             $userDB= new userDB();
             $users=$userDB->getAllUsers();
             echo $twig->render('pages/updateUsers.html.twig',['users'=>$users]);
             break;
-            
+
         //shows one user
         case '/update/single/edit':
             error_log('insifr case');
@@ -91,7 +91,7 @@ try {
             error_log($_POST['edit']);
             $userDB= new userDB();
             $user=$userDB->getUserByName($username);
-            error_log(print_r($user, true));  
+            error_log(print_r($user, true));
             echo $twig->render('pages/editUser.html.twig',['user'=>$user]);
             break;
 
@@ -109,25 +109,25 @@ try {
             $userDB = new userDB();
             $userID = $_POST['id'];
             $user= $userDB->getUserByIDobj($userID);
-            
+
             //error_log(print_r($user, true));
 
             $userDB->updateUser($user, $_POST);
             header('Location: /profile');
             break;
-        
+
         //delete one user
         case '/update/single/deleteUser':
             error_log('inside delerte single log user');
             $userDB = new userDB();
             $userID = $_POST['id'];
             $result = $userDB->deleteUser($userID);
-            if ($result) 
+            if ($result)
             {
                 error_log('delete record');
                 header('Location: /profile');
-            } 
-            else 
+            }
+            else
             {
                 error_log('wrong');
                 header('Location: /cart');
@@ -150,40 +150,40 @@ try {
             unset($_SESSION['user']);
             header('Location: /');
             break;
-        
+
         case '/update':
-            if (isset($_SESSION['user']) && $_SESSION['user']['username'] == 'admin') 
+            if (isset($_SESSION['user']) && $_SESSION['user']['username'] == 'admin')
             {
                 echo $twig->render('pages/update.html.twig');
-            } 
-            else 
+            }
+            else
             {
-                header('Location: /error'); 
+                header('Location: /error');
             }
             break;
 
         case '/wishlist':
-            if (isset($_SESSION['user'])) 
+            if (isset($_SESSION['user']))
             {
                 $userId = $_SESSION['user']['id'];
                 $wishlistDB = new wishlistDB();
                 $productDB = new ProductDB();
                 $wishlistItems = $wishlistDB->getWishlistByUser($userId);
-                
+
                 // Get product details for each wishlist item
                 foreach ($wishlistItems as &$item) {
                     $product = $productDB->getProductById($item['productid']);
                     $item['product'] = $product;
                 }
-                
+
                 echo $twig->render('pages/wishlist.html.twig', [
                     'wishlistItems' => $wishlistItems,
                     'current_page' => 'wishlist'
                 ]);
-            } 
-            else 
+            }
+            else
             {
-                header('Location: /login'); 
+                header('Location: /login');
             }
             break;
 
@@ -192,7 +192,7 @@ try {
                 header('Location: /login');
                 break;
             }
-            
+
             $userId = $_SESSION['user']['id'];
             $productId = $_POST['productId'];
             $wishlistDB = new wishlistDB();
@@ -205,7 +205,7 @@ try {
                 header('Location: /login');
                 break;
             }
-            
+
             $wishlistId = $_POST['wishlistId'];
             $wishlistDB = new wishlistDB();
             $wishlistDB->deleteWishlistItem($wishlistId);
@@ -217,18 +217,18 @@ try {
                 header('Location: /login');
                 break;
             }
-            
+
             $userId = $_SESSION['user']['id'];
             $productId = $_POST['productId'];
             $productDB = new ProductDB();
             $product = $productDB->getProductById($productId);
-            
+
             $createSales = new createSales();
             $createSales->insertValues($product['price'], $userId, $productId);
             header('Location: /cart');
             break;
-            
- 
+
+
         case '/profile':
             echo $twig->render('pages/profile.html.twig');
             break;
@@ -248,14 +248,14 @@ try {
                 header('Location: /login');
                 break;
             }
-            
+
             $userId = $_SESSION['user']['id'];
             $createSales = new createSales();
             $productDB = new ProductDB();
 
             // Get all sales for the user
             $cartItems = $createSales->getSalesByUserId($userId);
-            
+
             // Add product details to each cart item
             foreach ($cartItems as &$item) {
                 $product = $productDB->getProductById($item['productid']);
@@ -273,7 +273,7 @@ try {
                 header('Location: /login');
                 break;
             }
-            
+
             $salesId = $_POST['salesId'];
             $createSales = new createSales();
             $createSales->deleteSale($salesId);
@@ -289,17 +289,17 @@ try {
 
         case '/register':
             // render registration page
-            
+
             echo $twig->render('pages/register.html.twig', [
                 // if error header exists pass to page
                 'current_page' => 'register',
                 'error' => isset($_SESSION['ERROR']) ? $_SESSION['ERROR'] : null
             ]);
 
-            if (isset($_SESSION['ERROR'])) 
-            { 
+            if (isset($_SESSION['ERROR']))
+            {
                 unset($_SESSION['ERROR']);
-            } 
+            }
 
             break;
 
@@ -308,19 +308,19 @@ try {
                 header('Location: /login');
                 break;
             }
-            
+
             $userId = $_SESSION['user']['id'];
             $createSales = new createSales();
             $productDB = new ProductDB();
 
             // Get all cart items before clearing
             $cartItems = $createSales->getSalesByUserId($userId);
-            
+
             // Add product details to each cart item
             foreach ($cartItems as &$item) {
                 $product = $productDB->getProductById($item['productid']);
                 $item['product'] = $product;
-                
+
             }
 
             // render order summary page with cart items
@@ -367,12 +367,30 @@ try {
                 header('Location: /error');
             }
             break;
-            
+
         case '/create':
             if (isset($_SESSION['user']) && ($_SESSION['user']['username'] == 'admin' || $_SESSION['user']['is_seller'] == 1)) {
                 echo $twig->render('pages/productcreation.html.twig', [
                     'current_page' => 'productcreation'
                 ]);
+            } else {
+                header('Location: /error');
+            }
+            break;
+
+        case '/productcreation':
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+
+            // Create a new product from form data
+            $product = new Product($_POST);
+            $productDB = new ProductDB();
+            $productId = $productDB->createProduct($product);
+
+            if ($productId) {
+                header('Location: /created');
             } else {
                 header('Location: /error');
             }
@@ -392,8 +410,8 @@ try {
                 // find product by id
                 $productDB = new ProductDB();
                 $product = $productDB->getProductById($productId);
-                
-                if ($product) 
+
+                if ($product)
                 {
                     $commentDB = new commentDB();
                     $comments = $commentDB->getCommentsByProductID($productId);
@@ -416,7 +434,7 @@ try {
 } catch (Exception $e) {
     // log any errors that occur
     error_log($e->getMessage());
-    
+
     // handle errors differently in production vs development
     if (getenv('ENVIRONMENT') === 'production') {
         http_response_code(500);
