@@ -324,6 +324,7 @@ try {
             $userId = $_SESSION['user']['id'];
             $createSales = new createSales();
             $productDB = new ProductDB();
+            $userDB = new userDB();
 
             // Get all cart items before clearing
             $cartItems = $createSales->getSalesByUserId($userId);
@@ -332,13 +333,69 @@ try {
             foreach ($cartItems as &$item) {
                 $product = $productDB->getProductById($item['productid']);
                 $item['product'] = $product;
-
             }
 
-            // render order summary page with cart items
+            // Calculate subtotal
+            $subtotal = 0;
+            foreach ($cartItems as $item) {
+                $subtotal += $item['product']['price'];
+            }
+
+            // Get user information for age-based discount
+            $user = $userDB->getUserByID($userId);
+            $userDob = $user['dob'];
+
+            // Calculate user age
+            $dobDate = DateTime::createFromFormat('d-m-Y', $userDob);
+            if (!$dobDate) {
+                // Try alternative format if the first one fails
+                $dobDate = DateTime::createFromFormat('Y-m-d', $userDob);
+            }
+
+            $now = new DateTime();
+            $age = 0;
+
+            if ($dobDate) {
+                $age = $now->diff($dobDate)->y;
+            }
+
+            // Calculate discounts
+            $spendingDiscount = 0;
+            $ageDiscount = 0;
+            $totalDiscount = 0;
+
+            // Spending threshold discount
+            if ($subtotal >= 200) {
+                $spendingDiscount = $subtotal * 0.15; // 15% discount for orders over $200
+            } elseif ($subtotal >= 100) {
+                $spendingDiscount = $subtotal * 0.10; // 10% discount for orders over $100
+            } elseif ($subtotal >= 50) {
+                $spendingDiscount = $subtotal * 0.05; // 5% discount for orders over $50
+            }
+
+            // Age-based discount
+            if ($age >= 65) {
+                $ageDiscount = $subtotal * 0.10; // 10% senior discount
+            } elseif ($age <= 25) {
+                $ageDiscount = $subtotal * 0.05; // 5% youth discount
+            }
+
+            // Apply the larger of the two discounts
+            $totalDiscount = max($spendingDiscount, $ageDiscount);
+
+            // Calculate final total
+            $total = $subtotal - $totalDiscount;
+
+            // render order summary page with cart items and discount information
             echo $twig->render('pages/ordersummary.html.twig', [
                 'current_page' => 'order',
-                'cartItems' => $cartItems
+                'cartItems' => $cartItems,
+                'subtotal' => $subtotal,
+                'spendingDiscount' => $spendingDiscount,
+                'ageDiscount' => $ageDiscount,
+                'totalDiscount' => $totalDiscount,
+                'total' => $total,
+                'userAge' => $age
             ]);
             break;
 
