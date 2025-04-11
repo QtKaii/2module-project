@@ -47,6 +47,3 @@ User registration system accepts :
 - Seller toggle is 0 (Valid)
 - Seller toggle is 0(Valid)
 
----
-
-## Test Cases
