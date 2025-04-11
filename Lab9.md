@@ -17,11 +17,12 @@ Manuel unit tests for each
 ### UI Testing
 #### What features are currently implemented (e.g., minimum clicks, recoverability, etc., see Lecture 9)?
 - Consistency
+- Guidance
+- Feedback
 - understandalbe path
 - Admin UI
-- Differentiate admin 
-- seller UI 
-- Labels
+- Diff Users(Selleres, Buyer and Admin)
+
 #### What needs to be added to our UI to enable these tests?
 
 
