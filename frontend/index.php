@@ -245,6 +245,17 @@ try {
             error_log('User unit Test done');   
             break;     
 
+        case '/admin/test':
+            error_log('Entered case');
+            error_log('Comment unit Test');
+            $test= new unitTestComment();
+            error_log('Comment unit Test done');  
+            error_log('User unit Test');
+            $test= new unitTestUser();
+            error_log('User unit Test done');   
+            $wishlistTest= new $wishlistTest();
+            break;     
+
         case '/':
         case '/index':
             // render home page with product list from database
