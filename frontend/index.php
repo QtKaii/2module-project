@@ -15,7 +15,7 @@ require_once __DIR__ . '/models/commentDB.php';
 require_once __DIR__ . '/models/Product.php';
 require_once __DIR__ . '/models/ProductDB.php';
 require_once __DIR__ . '/models/createSales.php';
-
+require_once __DIR__ . '/models/Wishlisttest.php';
 
 session_start();
 
