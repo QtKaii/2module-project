@@ -8,6 +8,27 @@ class wishlistDB
     {
         $this->db = new SQLite3(__DIR__ . '/../db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
         $this->makeTable();
+        $this->addInitialWishlist();
+    }
+
+    private function addInitialWishlist()
+    {
+        // Check if wishlist items exist first
+        $result = $this->db->query("SELECT COUNT(*) as count FROM wishlist");
+        $count = $result->fetchArray()['count'];
+        
+        if ($count === 0) {
+            $initialWishlist = [
+                ['productid' => 2, 'userid' => 1],  // User 1 wishes for Product 2
+                ['productid' => 3, 'userid' => 1],  // User 1 wishes for Product 3
+                ['productid' => 1, 'userid' => 2],  // User 2 wishes for Product 1
+                ['productid' => 4, 'userid' => 3]   // User 3 wishes for Product 4
+            ];
+
+            foreach ($initialWishlist as $item) {
+                $this->insertValues($item['productid'], $item['userid']);
+            }
+        }
     }
 
     private function makeTable()

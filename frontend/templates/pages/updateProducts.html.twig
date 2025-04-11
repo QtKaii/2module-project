@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage Products{% endblock %}
+
+{% block content %}
+<div class="py-8 md:py-16">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <div class="sm:flex sm:items-center">
+            <div class="sm:flex-auto">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Products</h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage product listings</p>
+            </div>
+            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                <a href="/create" class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                    Add Product
+                </a>
+            </div>
+        </div>
+
+        {% if products is not empty %}
+        <div class="mt-6 flow-root">
+            <div class="overflow-x-auto">
+                <div class="inline-block min-w-full align-middle">
+                    <div class="overflow-hidden ring-1 ring-gray-200 dark:ring-gray-700 rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-800">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Title</th>
+                                    <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Description</th>
+                                    <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Price</th>
+                                    <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Seller</th>
+                                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                                        <span class="sr-only">Actions</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
+                                {% for product in products %}
+                                    <tr>
+                                        <td class="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-900 dark:text-white">{{ product.title }}</td>
+                                        <td class="px-4 py-4 text-sm text-gray-700 dark:text-gray-200">
+                                            <div class="max-w-xs overflow-hidden text-ellipsis">{{ product.description }}</div>
+                                        </td>
+                                        <td class="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200">${{ product.price }}</td>
+                                        <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-700 dark:text-gray-200">{{ product.seller_id ?: 'No seller' }}</td>
+                                        <td class="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                            <div class="flex justify-end gap-3">
+                                                <a href="/update/product/sales/{{ product.id }}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
+                                                    Sales<span class="sr-only">, {{ product.title }}</span>
+                                                </a>
+                                                <form action="/update/product/edit" method="post">
+                                                    <button type="submit" name='edit' value="{{product.id}}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                                        Edit<span class="sr-only">, {{ product.title }}</span>
+                                                    </button>
+                                                </form>
+                                                <form action="/update/product/delete" method="post">
+                                                    <button type="submit" name='delete' value="{{product.id}}" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
+                                                        Delete<span class="sr-only">, {{ product.title }}</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <div class="text-center py-12">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No products</h3>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by creating a new product.</p>
+                <div class="mt-6">
+                    <a href="/create" class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Add Product
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="mt-6">
+            <a href="/update" class="inline-flex items-center text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-500">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Admin Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

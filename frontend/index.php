@@ -10,14 +10,17 @@ require_once __DIR__ . '/models/user.php';
 require_once __DIR__ . '/models/wishlist.php';
 require_once __DIR__ . '/models/wishlistDB.php';
 require_once __DIR__ . '/models/userDB.php';
-require_once __DIR__ . '/models/WishlistTest.php';
+require_once __DIR__ . '/models/comment.php';
+require_once __DIR__ . '/models/commentDB.php';
+require_once __DIR__ . '/models/Product.php';
+require_once __DIR__ . '/models/ProductDB.php';
+require_once __DIR__ . '/models/createSales.php';
 
 
 session_start();
 
 $userDB= new userDB();
-
-
+ 
 
 //$userAPI = new user($db);
 
@@ -106,11 +109,10 @@ try {
             $userDB = new userDB();
             $userID = $_POST['id'];
             $user= $userDB->getUserByIDobj($userID);
-            $user->setFullname($_POST['fullname']);
-            $user->setEmail($_POST['email']);
-            $user->setDOB($_POST['dob']);
+            
+            //error_log(print_r($user, true));
 
-            $userDB->updateUser($user);
+            $userDB->updateUser($user, $_POST);
             header('Location: /profile');
             break;
         
@@ -135,11 +137,13 @@ try {
 
         case '/submit/comment':
             $usercomment= $_POST['comment'];
-            $username=$_SESSION['username'];
+            $userID=$_SESSION['user']['id'];
+            error_log(print_r($userID, true));
             $productID=$_POST['productID'];
             $comment = new comment($userID, $productID, $usercomment);
             $commentDB=new commentDB();
             $commentRecord= $commentDB->makeRecord($comment);
+            header('Location: /');
             break;
 
         case '/logout':
@@ -150,11 +154,11 @@ try {
         case '/update':
             if (isset($_SESSION['user']) && $_SESSION['user']['username'] == 'admin') 
             {
-                echo $twig->render('pages/update.html.twig', array('user' => $user));
+                echo $twig->render('pages/update.html.twig');
             } 
             else 
             {
-                header('Location: /error'); // Redirect to an error page or another page if the user is not an admin
+                header('Location: /error'); 
             }
             break;
 
@@ -162,8 +166,16 @@ try {
             if (isset($_SESSION['user'])) 
             {
                 $userId = $_SESSION['user']['id'];
-                $wishlistDB = new wishlistDB();  
-                $wishlistItems = $wishlistDB->getWishlistByUser($userId); 
+                $wishlistDB = new wishlistDB();
+                $productDB = new ProductDB();
+                $wishlistItems = $wishlistDB->getWishlistByUser($userId);
+                
+                // Get product details for each wishlist item
+                foreach ($wishlistItems as &$item) {
+                    $product = $productDB->getProductById($item['productid']);
+                    $item['product'] = $product;
+                }
+                
                 echo $twig->render('pages/wishlist.html.twig', [
                     'wishlistItems' => $wishlistItems,
                     'current_page' => 'wishlist'
@@ -174,30 +186,98 @@ try {
                 header('Location: /login'); 
             }
             break;
-            
 
+        case '/wishlist/add':
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+            
+            $userId = $_SESSION['user']['id'];
+            $productId = $_POST['productId'];
+            $wishlistDB = new wishlistDB();
+            $wishlistDB->insertValues($productId, $userId);
+            header('Location: /wishlist');
+            break;
+
+        case '/wishlist/remove':
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+            
+            $wishlistId = $_POST['wishlistId'];
+            $wishlistDB = new wishlistDB();
+            $wishlistDB->deleteWishlistItem($wishlistId);
+            header('Location: /wishlist');
+            break;
+
+        case '/cart/add':
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+            
+            $userId = $_SESSION['user']['id'];
+            $productId = $_POST['productId'];
+            $productDB = new ProductDB();
+            $product = $productDB->getProductById($productId);
+            
+            $createSales = new createSales();
+            $createSales->insertValues($product['price'], $userId, $productId);
+            header('Location: /cart');
+            break;
+            
+ 
         case '/profile':
             echo $twig->render('pages/profile.html.twig');
             break;
 
         case '/':
         case '/index':
-            // render home page with product list
+            // render home page with product list from database
+            $productDB = new ProductDB();
+            $products = $productDB->getAllProducts();
             echo $twig->render('pages/index.html.twig', [
                 'current_page' => 'home',
+                'products' => $products
             ]);
             break;
         case '/cart':
-            // render shopping cart page
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+            
+            $userId = $_SESSION['user']['id'];
+            $createSales = new createSales();
+            $productDB = new ProductDB();
+
+            // Get all sales for the user
+            $cartItems = $createSales->getSalesByUserId($userId);
+            
+            // Add product details to each cart item
+            foreach ($cartItems as &$item) {
+                $product = $productDB->getProductById($item['productid']);
+                $item['product'] = $product;
+            }
+
             echo $twig->render('pages/cart.html.twig', [
-                'current_page' => 'cart'
+                'current_page' => 'cart',
+                'cartItems' => $cartItems
             ]);
             break;
-        case '/wishlist':
-            // render wishlist page
-            echo $twig->render('pages/wishlist.html.twig', [
-                'current_page' => 'wishlist'
-            ]);
+
+        case '/cart/remove':
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+            
+            $salesId = $_POST['salesId'];
+            $createSales = new createSales();
+            $createSales->deleteSale($salesId);
+            header('Location: /cart');
             break;
 
         case '/login':
@@ -209,31 +289,93 @@ try {
 
         case '/register':
             // render registration page
-            // if error header exists pass to page
-
+            
             echo $twig->render('pages/register.html.twig', [
+                // if error header exists pass to page
                 'current_page' => 'register',
                 'error' => isset($_SESSION['ERROR']) ? $_SESSION['ERROR'] : null
             ]);
 
-            if (isset($_SESSION['ERROR'])) { 
+            if (isset($_SESSION['ERROR'])) 
+            { 
                 unset($_SESSION['ERROR']);
             } 
 
             break;
 
         case '/order':
-            // render order summary page
+            if (!isset($_SESSION['user'])) {
+                header('Location: /login');
+                break;
+            }
+            
+            $userId = $_SESSION['user']['id'];
+            $createSales = new createSales();
+            $productDB = new ProductDB();
+
+            // Get all cart items before clearing
+            $cartItems = $createSales->getSalesByUserId($userId);
+            
+            // Add product details to each cart item
+            foreach ($cartItems as &$item) {
+                $product = $productDB->getProductById($item['productid']);
+                $item['product'] = $product;
+                
+            }
+
+            // render order summary page with cart items
             echo $twig->render('pages/ordersummary.html.twig', [
-                'current_page' => 'order'
+                'current_page' => 'order',
+                'cartItems' => $cartItems
             ]);
             break;
 
+        case '/update/products':
+            if (isset($_SESSION['user']) && $_SESSION['user']['username'] == 'admin') {
+                $productDB = new ProductDB();
+                $products = $productDB->getAllProducts();
+                echo $twig->render('pages/updateProducts.html.twig', ['products' => $products]);
+            } else {
+                header('Location: /error');
+            }
+            break;
+
+        case (preg_match('/^\/update\/product\/sales\/(\d+)$/', $path, $matches) ? true : false):
+            if (isset($_SESSION['user']) && $_SESSION['user']['username'] == 'admin') {
+                // Get the product ID from the URL
+                $productId = (int)$matches[1];
+                $productDB = new ProductDB();
+                $createSales = new createSales();
+
+                $product = $productDB->getProductById($productId);
+                $sales = $createSales->getSalesByProductId($productId);
+
+                // Calculate totals
+                $totalRevenue = 0;
+                foreach ($sales as $sale) {
+                    $totalRevenue += $sale['cost'];
+                }
+                $avgPrice = count($sales) > 0 ? $totalRevenue / count($sales) : 0;
+
+                echo $twig->render('pages/productSales.html.twig', [
+                    'product' => $product,
+                    'sales' => $sales,
+                    'totalRevenue' => $totalRevenue,
+                    'avgPrice' => $avgPrice
+                ]);
+            } else {
+                header('Location: /error');
+            }
+            break;
+            
         case '/create':
-            // render create product page
-            echo $twig->render('pages/productcreation.html.twig', [
-                'current_page' => 'productcreation'
-            ]);
+            if (isset($_SESSION['user']) && ($_SESSION['user']['username'] == 'admin' || $_SESSION['user']['is_seller'] == 1)) {
+                echo $twig->render('pages/productcreation.html.twig', [
+                    'current_page' => 'productcreation'
+                ]);
+            } else {
+                header('Location: /error');
+            }
             break;
 
         case '/created':
@@ -248,15 +390,16 @@ try {
             if (preg_match('/^\/product\/(\d+)$/', $path, $matches)) {
                 $productId = (int)$matches[1];
                 // find product by id
-                $product = array_filter($products, function($p) use ($productId) {
-                    return $p['id'] === $productId;
-                });
+                $productDB = new ProductDB();
+                $product = $productDB->getProductById($productId);
                 
-                if (!empty($product)) {
-                    // render product detail page if found
-                    $product = reset($product);
+                if ($product) 
+                {
+                    $commentDB = new commentDB();
+                    $comments = $commentDB->getCommentsByProductID($productId);
                     echo $twig->render('pages/product.html.twig', [
-                        'product' => $product
+                        'product' => $product,
+                        'comments' => $comments
                     ]);
                 } else {
                     // show 404 if product not found

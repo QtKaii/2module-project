@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product Sales{% endblock %}
+
+{% block content %}
+<div class="py-8 md:py-16">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
+                <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">{{ product.title }}</h3>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Sales history and analytics</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-lg font-medium text-gray-700 dark:text-gray-300">Price: ${{ product.price }}</p>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Product ID: {{ product.id }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="mb-8">
+                        <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Overview</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Sales</p>
+                                <p class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white">{{ sales|length }}</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Revenue</p>
+                                <p class="mt-1 text-2xl font-semibold text-green-600 dark:text-green-400">${{ totalRevenue|default(0)|number_format(2) }}</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Average Sale Price</p>
+                                <p class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white">${{ avgPrice|default(0)|number_format(2) }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Sales History</h4>
+                        <div class="overflow-hidden ring-1 ring-gray-200 dark:ring-gray-700 rounded-lg">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead class="bg-gray-50 dark:bg-gray-800">
+                                    <tr>
+                                        <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Date</th>
+                                        <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">User</th>
+                                        <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
+                                    {% if sales is empty %}
+                                        <tr>
+                                            <td colspan="3" class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400 text-center">
+                                                No sales recorded for this product yet.
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        {% for sale in sales %}
+                                            <tr>
+                                                <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-700 dark:text-gray-200">
+                                                    {{ sale.date|default('N/A') }}
+                                                </td>
+                                                <td class="whitespace-nowrap px-4 py-4 text-sm text-gray-700 dark:text-gray-200">
+                                                    {{ sale.userId }}
+                                                </td>
+                                                <td class="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200">
+                                                    ${{ sale.cost|number_format(2) }}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <a href="/update/products" class="inline-flex items-center text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-500">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            Back to Products
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

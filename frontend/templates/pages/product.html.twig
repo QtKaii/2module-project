@@ -26,13 +26,27 @@
                     </span>
                 </div>
                 
-                {% include 'components/button.html.twig' with {
-                    'text': 'Add to Cart',
-                    'style': 'primary',
-                    'type': 'button'
-                } %}
+                <div class="flex gap-4 mb-4">
+                    <form action="/cart/add" method="POST">
+                        <input type="hidden" name="productId" value="{{ product.id }}">
+                        {% include 'components/button.html.twig' with {
+                            'text': 'Add to Cart',
+                            'style': 'primary',
+                            'type': 'submit'
+                        } %}
+                    </form>
 
-                <a href="/" class="mt-4 inline-block text-indigo-600 hover:text-indigo-500">
+                    <form action="/wishlist/add" method="POST">
+                        <input type="hidden" name="productId" value="{{ product.id }}">
+                        {% include 'components/button.html.twig' with {
+                            'text': 'Add to Wishlist',
+                            'style': 'secondary',
+                            'type': 'submit'
+                        } %}
+                    </form>
+                </div>
+
+                <a href="/" class="inline-block text-indigo-600 hover:text-indigo-500">
                     ← Back to Products
                 </a>
             </div>
@@ -40,46 +54,57 @@
     </div>
 
     <br><br>
-    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="md:flex">
-            <div class="p-8">
-                <p class="text-2xl font-bold text-blue-600">
-                    {{ "Enter Comment" }}
-                </p>
-                <br>
-                <form action="/submit/comment" method="POST">
-                    <div class="mb-8">
-                        <textarea name="comment" class="border rounded-lg p-2 w-full" placeholder="Type your comment" required></textarea>
-                        <input type='hidden' name="productID" value='{{ product.id }}'
-                    </div>
-                    
-                    {% include 'components/button.html.twig' with {
-                        'text': 'Submit Comment',
-                        'style': 'primary',
-                        'type': 'submit'
-                    } %} 
-                </form>
+    <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+        <div class="p-8">
+            <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Leave a Comment</h3>
             </div>
+            <form action="/submit/comment" method="POST" class="space-y-4">
+                <div>
+                    <label for="comment" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Your comment</label>
+                    <textarea 
+                        name="comment" 
+                        id="comment"
+                        rows="4"
+                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm" 
+                        placeholder="Share your thoughts about this product..."
+                        required
+                    ></textarea>
+                    <input type="hidden" name="productID" value="{{ product.id }}">
+                </div>
+                
+                {% include 'components/button.html.twig' with {
+                    'text': 'Post Comment',
+                    'style': 'primary',
+                    'type': 'submit',
+                    'class': 'w-full sm:w-auto'
+                } %} 
+            </form>
         </div>
     </div>
     <hr>
-    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-        <div class="md:flex">
-            <div class="p-8">
-                <h1 class="text-3xl font-bold text-gray-900 mb-4">
-                    {{ "Comments" }}
-                </h1>
-
-                <p class="text-gray-600 text-lg mb-6">
-                    {{ "Username" }}
-                </p>
-                <div class="mb-8">
-                    <span class="text-2xl font-bold text-blue-600">
-                        ${{ "erfjvq iefjqdvnojirenfmvoewrnmed rwfcnq    ofrcn..." }}
-                    </span>
-                </div>
-
+    <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+        <div class="p-8">
+            <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Comments</h3>
+                <span class="text-sm text-gray-500 dark:text-gray-400">{{ comments|length }} comment(s)</span>
             </div>
+            
+            {% if comments is empty %}
+                <div class="text-center py-6">
+                    <p class="text-gray-500 dark:text-gray-400">No comments yet. Be the first to comment!</p>
+                </div>
+            {% else %}
+                <div class="space-y-4">
+                    {% for comment in comments %}
+                        {% include 'components/comment.html.twig' with {
+                            'username': comment.userID,
+                            'userInitial': comment.userID|slice(0, 1),
+                            'comment': comment.comment
+                        } %}
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

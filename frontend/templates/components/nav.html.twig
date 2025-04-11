@@ -15,7 +15,7 @@
         {% if session.user.is_seller %}
             <a href="/create" class="text-white px-2 hover:text-gray-300 {{ current_page == 'create' ? 'underline' : '' }}">Create Product</a>
         {% else %}
-            <a href="/wishlist" class="text-white px-2 hover:text-gray-300 {{ current_page == 'wishlist' ? 'underline' : '' }}">Create wishlist</a>
+            <a href="/wishlist" class="text-white px-2 hover:text-gray-300 {{ current_page == 'wishlist' ? 'underline' : '' }}">Wishlist</a>
         {% endif %}
         
     {% endif %}
