@@ -9,7 +9,8 @@
         <a href="/logout" class="text-white px-2 hover:text-gray-300 {{ current_page == 'logout' ? 'underline' : '' }}">Logout</a>
 
         {% if session.user.is_admin %}
-            <a href="/update" class="text-white px-2 hover:text-gray-300 {{ current_page == 'delete' ? 'underline' : '' }}">Admin</a>
+            <a href="/update" class="text-white px-2 hover:text-gray-300 {{ current_page == 'admin' ? 'underline' : '' }}">Admin</a>
+            <a href="/admin/test"class="text-white px-2 hover:text-gray-300 {{ current_page == 'test' ? 'underline' : '' }}">Tests</a>
         {% endif %}
 
         {% if session.user.is_seller %}
