@@ -10,6 +10,7 @@ require_once __DIR__ . '/models/user.php';
 require_once __DIR__ . '/models/wishlist.php';
 require_once __DIR__ . '/models/wishlistDB.php';
 require_once __DIR__ . '/models/userDB.php';
+require_once __DIR__ . '/models/WishlistTest.php';
 
 
 session_start();
