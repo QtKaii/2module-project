@@ -41,6 +41,11 @@ echo "Running Discount Logic Path-Based Tests...\n";
 require_once __DIR__ . '/models/unitTestDiscounts.php';
 echo "Discount Logic Path-Based Tests Completed.\n\n";
 
+// Run Order Flow Path-Based Tests
+echo "Running Order Flow Path-Based Tests...\n";
+require_once __DIR__ . '/models/unitTestOrderFlow.php';
+echo "Order Flow Path-Based Tests Completed.\n\n";
+
 echo "=== All Tests Completed ===\n";
 echo "Check the error log for detailed test results.\n";
 ?>
