@@ -31,6 +31,11 @@ echo "Running ProductDB Tests...\n";
 require_once __DIR__ . '/models/unitTestProductDB.php';
 echo "ProductDB Tests Completed.\n\n";
 
+// Run Image Upload Tests
+echo "Running Image Upload Tests...\n";
+require_once __DIR__ . '/models/unitTestImageUpload.php';
+echo "Image Upload Tests Completed.\n\n";
+
 echo "=== All Tests Completed ===\n";
 echo "Check the error log for detailed test results.\n";
 ?>
