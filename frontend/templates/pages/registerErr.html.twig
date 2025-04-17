@@ -53,6 +53,7 @@
                 'placeholder': err.dob,
                 'required': true
             } %}
+            <p class="text-center text-base font-semibold text-red-600 mt-2" >Must be older than 13</p>
         {% else %}
             {% include 'components/form-input.html.twig' with {
                 'name': 'dob',
@@ -62,15 +63,26 @@
             } %}
         {% endif %}
         
-
-        {% include 'components/form-input.html.twig' with {
-            'name': 'password',
-            'id': 'password',
-            'type': 'password',
-            'placeholder': 'password',
-            'required': true,
-            'context': 'register'
-        } %}
+        {#passowrd #}
+        {% if err.password %}
+            {% include 'components/form-input.html.twig' with {
+                'name': 'password',
+                'id': 'password',
+                'type': 'password',
+                'placeholder': err.password,
+                'required': true,
+                'context': 'register'
+            } %}
+        {% else %}
+            {% include 'components/form-input.html.twig' with {
+                'name': 'password',
+                'id': 'password',
+                'type': 'password',
+                'value': old.password,
+                'required': true,
+                'context': 'register'
+            } %}
+        {% endif %}
 
         {% include 'components/form-input.html.twig' with {
             'name': 'password_confirm',

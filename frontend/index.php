@@ -74,6 +74,7 @@ try {
             if (strlen($DATA['password']) < 6 || strlen($DATA['password'])  > 30) 
             {
                 $passwordErr='password should be 6-30 characters';
+                //error_log($passwordErr);
                 $state=true;
             }
             //should be older than 13
@@ -85,12 +86,22 @@ try {
                 $dobErr='should be older than 13';
                 $state=true;
             }
+            //check if username is unique
+            $userDB= new userDB();
+            $usernameExists=$userDB->getUserByName($DATA['username']);
+            if($usernameExists)
+            {
+                $usernameErr="Username already exists";
+                $state=true;
+            }
+
             $err= [
                 'username'=> $usernameErr ?? null,
                 'fullname'=> $fullnameErr ?? null,
                 'password'=> $passwordErr ?? null,
                 'dob'=> $dobErr ?? null
             ];
+            
             if ($state==true)
             {
                 echo $twig->render('pages/registerErr.html.twig', [
@@ -98,10 +109,10 @@ try {
                     'old' => $DATA
                 ]);
             }
+            //make user obj then add to db
             else
-            {
-                $user= new user($DATA);
-                $userDB= new userDB();
+            {                
+                $user= new user($DATA);                    
                 $userDB->makeUser($user);
                 header('Location: /login');
             }
