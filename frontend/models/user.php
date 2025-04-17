@@ -17,8 +17,7 @@ class user
         $this->email=$_POSTDATA['email'];
         $this->dob=$_POSTDATA['dob'];
         $this->password=$_POSTDATA['password'];
-        $this->is_seller=isset($_POST['seller-toggle']) ? $_POST['seller-toggle'] : 0;
-
+        $this->is_seller=isset($_POSTDATA['seller-toggle']) ? $_POSTDATA['seller-toggle'] : 0;
     }
 
     public function getByUsername($str)
@@ -108,5 +107,3 @@ class user
     }
 
 }
-
-?>
