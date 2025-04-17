@@ -15,9 +15,8 @@
 
                 <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 shadow-lg">
                     <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Order Summary</h2>
-                    
+
                     <div class="flex flex-col gap-4">
-                        {% set total = 0 %}
                         {% if cartItems is defined and cartItems is not empty %}
                             {% for item in cartItems %}
                                 {% include 'components/order-summary-item.html.twig' with {
@@ -25,13 +24,54 @@
                                     'description': item.product.description,
                                     'price': item.product.price
                                 } %}
-                                {% set total = total + item.product.price %}
                             {% endfor %}
                         {% endif %}
 
-                        <div class="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mt-4 border-t-2 border-green-500">
-                            <span class="text-xl font-semibold text-gray-900 dark:text-white">Total</span>
-                            <span class="text-xl font-semibold text-green-600 dark:text-green-500">${{ total | number_format(2) }}</span>
+                        <!-- Order Summary Details -->
+                        <div class="mt-6 space-y-3">
+                            <!-- Subtotal -->
+                            <div class="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                                <span class="text-base font-medium text-gray-700 dark:text-gray-300">Subtotal</span>
+                                <span class="text-base font-medium text-gray-700 dark:text-gray-300">${{ subtotal | number_format(2) }}</span>
+                            </div>
+
+                            <!-- Spending Discount -->
+                            {% if spendingDiscount > 0 %}
+                            <div class="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                                <span class="text-base font-medium text-gray-700 dark:text-gray-300">
+                                    Spending Discount
+                                    {% if subtotal >= 200 %}
+                                        (15% off orders over $200)
+                                    {% elseif subtotal >= 100 %}
+                                        (10% off orders over $100)
+                                    {% elseif subtotal >= 50 %}
+                                        (5% off orders over $50)
+                                    {% endif %}
+                                </span>
+                                <span class="text-base font-medium text-red-600 dark:text-red-400">-${{ spendingDiscount | number_format(2) }}</span>
+                            </div>
+                            {% endif %}
+
+                            <!-- Age Discount -->
+                            {% if ageDiscount > 0 %}
+                            <div class="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                                <span class="text-base font-medium text-gray-700 dark:text-gray-300">
+                                    Age Discount
+                                    {% if userAge >= 65 %}
+                                        (10% Senior Discount)
+                                    {% elseif userAge <= 25 %}
+                                        (5% Youth Discount)
+                                    {% endif %}
+                                </span>
+                                <span class="text-base font-medium text-red-600 dark:text-red-400">-${{ ageDiscount | number_format(2) }}</span>
+                            </div>
+                            {% endif %}
+
+                            <!-- Total -->
+                            <div class="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mt-4 border-t-2 border-green-500">
+                                <span class="text-xl font-semibold text-gray-900 dark:text-white">Total</span>
+                                <span class="text-xl font-semibold text-green-600 dark:text-green-500">${{ total | number_format(2) }}</span>
+                            </div>
                         </div>
                     </div>
 
