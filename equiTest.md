@@ -47,3 +47,93 @@ User registration system accepts :
 - Seller toggle is 0 (Valid)
 - Seller toggle is 0(Valid)
 
+## Test Cases
+
+### Test Case 1: All Valid Inputs
+
+**Inputs:**
+- Username: `user01`
+- Full Name: `Kurt Mads`
+- Password: `aaaaaa`
+- DOB: `2000-05-20`
+
+**Expected Result:**  
+Registration successful.
+
+---
+
+### Test Case 2: Username Too Short
+
+**Inputs:**
+- Username: `u`
+- Full Name: `Kurt Mads`
+- Password: `aaaaaa`
+- DOB: `2000-05-20`
+
+**Expected Result:**  
+Error – "Username should be 4 to 20 characters."
+
+---
+
+### Test Case 3: Full Name Has Numbers
+
+**Inputs:**
+- Username: `user01`
+- Full Name: `1111213`
+- Password: `aaaaaa`
+- DOB: `2000-05-20`
+
+**Expected Result:**  
+Error – "Full name must contain only letters and spaces."
+
+---
+
+### Test Case 4: Password Too Short
+
+**Inputs:**
+- Username: `user01`
+- Full Name: `Kurt Mads`
+- Password: `a`
+- DOB: `2000-05-20`
+
+**Expected Result:**  
+Error – "Password must be between 6 and 30 characters."
+
+---
+
+### Test Case 5: Underage User
+
+**Inputs:**
+- Username: `user01`
+- Full Name: `Kurt Mads`
+- Password: `aaaaaa`
+- DOB: `2023-05-20`
+
+**Expected Result:**  
+Error – "You must be at least 13 years old to register."
+
+---
+
+### Test Case 6: Full Name Too Long
+
+**Inputs:**
+- Username: `user01`
+- Full Name: `A name that is far too long and exceeds forty characters total`
+- Password: `aaaaaa`
+- DOB: `2000-05-20`
+
+**Expected Result:**  
+Error – "Full name must be 2 to 40 characters."
+
+---
+
+### Test Case 7: Username Too Long
+
+**Inputs:**
+- Username: `averyveryveryverylongusername`
+- Full Name: `Kurt Mads`
+- Password: `aaaaaa`
+- DOB: `2000-05-20`
+
+**Expected Result:**  
+Error – "Username should be 4 to 20 characters."
