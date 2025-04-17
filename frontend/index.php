@@ -17,6 +17,7 @@ require_once __DIR__ . '/models/ProductDB.php';
 require_once __DIR__ . '/models/createSales.php';
 require_once __DIR__ . '/models/unitTestComment.php';
 require_once __DIR__ . '/models/unitTestUser.php';
+require_once __DIR__ . '/models/userSanit.php';
 
 
 session_start();
@@ -55,10 +56,55 @@ try {
     switch ($path)
     {
         case '/api/user/create':
-            $user= new user($_POST);
-            $userDB= new userDB();
-            $userDB->makeUser($user);
-            header('Location: /login');
+            $DATA=sanit($_POST);
+            $state=false;
+            //username 4–20 characters
+            if (strlen($DATA['username']) < 4 || strlen($DATA['username'])  > 20 ) 
+            {
+                $usernameErr='username shpould be 4 to 20 characters';
+                $state=true;
+            }
+            //fullname only letters and spaces, 2–40 characters
+            if (!preg_match('/^[A-Za-z ]$/', $DATA['name']) || strlen($DATA['name']) < 2 || strlen($DATA['name'])  > 40 ) 
+            {
+                $fullnameErr='fullname only letters and spaces, 2 to 40 characters';
+                $state=true;
+            }
+            // password 6-30 characters
+            if (strlen($DATA['password']) < 6 || strlen($DATA['password'])  > 30) 
+            {
+                $passwordErr='password should be 6-30 characters';
+                $state=true;
+            }
+            //should be older than 13
+            $userDOB=new DateTime($DATA['dob']);
+            $currentDate= new DateTime();
+            $age= $currentDate->diff($userDOB)->y;
+            if($age<13)
+            {
+                $dobErr='should be older than 13';
+                $state=true;
+            }
+            $err= [
+                'username'=> $usernameErr ?? null,
+                'fullname'=> $fullnameErr ?? null,
+                'password'=> $passwordErr ?? null,
+                'dob'=> $dobErr ?? null
+            ];
+            if ($state==true)
+            {
+                echo $twig->render('pages/registerErr.html.twig', [
+                    'err' => $err,
+                    'old' => $DATA
+                ]);
+            }
+            else
+            {
+                $user= new user($DATA);
+                $userDB= new userDB();
+                $userDB->makeUser($user);
+                header('Location: /login');
+            }
             break;
 
         case '/api/user/login':

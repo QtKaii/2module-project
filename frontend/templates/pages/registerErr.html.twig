@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error{% endblock %}
+
+{% block content %}
+<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <h1 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Potential errors</h1>
+    {% include 'components/form-input.html.twig' with {
+        'name': 'username',
+        'placeholder':  err.username ?? old.username,
+        'required': true
+    } %}
+
+    {% include 'components/form-input.html.twig' with {
+        'name': 'name',
+        'placeholder':  err.fullname ?? old.fullname,
+        'required': true
+    } %}
+
+    {% include 'components/form-input.html.twig' with {
+        'name': 'email',
+        'type': 'email',
+        'placeholder': old.email,
+        'required': true
+    } %}
+
+    {% include 'components/form-input.html.twig' with {
+        'name': 'dob',
+        'type': 'date',
+        'placeholder': err.dob ?? old.dob,
+        'required': true
+    } %}
+
+    {% include 'components/form-input.html.twig' with {
+        'name': 'password',
+        'id': 'password',
+        'type': 'password',
+        'placeholder': err.password ?? old.password,
+        'required': true,
+        'context': 'register'
+    } %}
+
+    {% include 'components/form-input.html.twig' with {
+        'name': 'password_confirm',
+        'id': 'password_confirm',
+        'type': 'password',
+        'placeholder': null,
+        'required': true,
+        'context': 'register'
+    } %}
+
+    {% include 'components/form-input.html.twig' with {
+        'name': 'seller-toggle',
+        'label': 'Are you a seller?',
+        'type': 'toggle',
+        'show_error': true,
+        'required': false,
+        'value': form.seller_toggle.value is defined ? form.seller_toggle.value : 0,
+    } %}
+
+    {% include 'components/button.html.twig' with {
+            'type': 'submit',
+            'text': 'Create Account',
+            'style': 'primary'
+        } %}
+
+
+</div>
+    
+{% endblock %}
