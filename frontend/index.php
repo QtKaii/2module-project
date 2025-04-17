@@ -65,7 +65,7 @@ try {
                 $state=true;
             }
             //fullname only letters and spaces, 2–40 characters
-            if (!preg_match('/^[A-Za-z ]$/', $DATA['name']) || strlen($DATA['name']) < 2 || strlen($DATA['name'])  > 40 ) 
+            if (!preg_match('/^[A-Za-z ]+$/', $DATA['name']) || strlen($DATA['name']) < 2 || strlen($DATA['name'])  > 40 ) 
             {
                 $fullnameErr='fullname only letters and spaces, 2 to 40 characters';
                 $state=true;
