@@ -566,9 +566,29 @@ try {
                 {
                     $commentDB = new commentDB();
                     $comments = $commentDB->getCommentsByProductID($productId);
+                    $userDB = new userDB();
+                    $usernames=[];
+                    /*
+                    foreach ($comments as $comment)
+                    {
+                       // $commentUserID=$comment[$userID];
+                        //$comment['username']=$userDB->getUserNameByID($comment['userID']);
+                        //error_log(print_r($comment));
+                        //$usernames[$userID] = $user['name']; 
+                        //$commentUserName=$userDB->getUserByID($indiComment.$userID);
+                        //$commentUserID=$indiComment.$userID;
+                    }
+                    error_log(print_r($comments));
+                    */
                     echo $twig->render('pages/product.html.twig', [
                         'product' => $product,
                         'comments' => $comments
+                        /*tried to make two arrays of username and user id, in twig page use comment id to match to userid array, 
+                        get index and find matching index in username to show name
+                        then tried the simplier method of adding to the comments useing comment['username], didnt get to work
+                        */
+                        //'username'=> $commentUserName,
+                        //'usernameUserID' => $commentUserID
                     ]);
                 } else {
                     // show 404 if product not found

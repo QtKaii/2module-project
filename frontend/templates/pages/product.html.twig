@@ -98,7 +98,7 @@
                 <div class="space-y-4">
                     {% for comment in comments %}
                         {% include 'components/comment.html.twig' with {
-                            'username': comment.userID,
+                            'username': '',
                             'userInitial': comment.userID|slice(0, 1),
                             'comment': comment.comment
                         } %}

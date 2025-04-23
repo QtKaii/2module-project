@@ -81,6 +81,16 @@ class userDB
         $result = $stmt->execute();
         return $result->fetchArray();
     }
+    public function getUserNameByID($id)
+    {
+        $query = "SELECT username FROM Users WHERE id= :id";
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindValue(":id", $id, SQLITE3_NUM);
+
+        $result = $stmt->execute();
+        return $result->fetchArray();
+    }
     private function setAdmin($username)
     {
         $query = "UPDATE Users SET is_admin = 1 WHERE username= ?";
