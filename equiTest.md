@@ -137,3 +137,17 @@ Error – "Full name must be 2 to 40 characters."
 
 **Expected Result:**  
 Error – "Username should be 4 to 20 characters."
+
+---
+
+## Test Results
+
+| Test Case | Pass/Fail |
+|-----------|-----------|
+| 1         |    Pass   |
+| 2         |    Fail   |
+| 3         |    Fail   |
+| 4         |    Fail   |
+| 5         |    Fail   |
+| 6         |    Fail   |
+| 7         |    Fail   |
