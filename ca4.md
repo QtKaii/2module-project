@@ -7,6 +7,7 @@ completed atleat five unit tests
 - sales
 ## UI Testing
 Completed
+- User Familiarity
 - Consistency
 - Minimal Suprise
 - Recoverability
