@@ -513,6 +513,28 @@ try {
             // Create a new product from form data
             $product = new Product($_POST);
 
+            $errors=[];
+
+            if(strlen($product->getTitle())<3 || strlen($product->getTitle())>30)
+            {
+                $errors['title']="Product name should be 3-30 characters long";
+                error_log($errors['title']);
+            }
+            if(strlen($product->getDescription())<10 || strlen($product->getTitle())>100)
+            {
+                $errors['description']="Product description should be 10-100 characters long";
+                error_log($errors['description']);
+            }
+            if($product->getPrice()>1100)
+            {
+                $errors['price']="Cannot sell items for more than 1100";
+                error_log($errors['price']);
+            }
+            if(empty($_FILES['image']['name']))
+            {
+                $errors['image']="Need product image to list product";
+                error_log($errors['image']);
+            }
             // Handle image upload
             if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
                 $uploadDir = __DIR__ . '/uploads/';
@@ -537,6 +559,15 @@ try {
                 }
             }
 
+            if($errors)
+            {
+                echo $twig->render('pages/productcreation.html.twig',
+                [
+                    'current_page'=>'productcreation',
+                    'err'=> $errors
+                ]);
+                exit;
+            }
             $productDB = new ProductDB();
             $productId = $productDB->createProduct($product);
 
