@@ -1,18 +1,28 @@
 ## Unit
-compelted
+completed atleat five unit tests
+- comments
+- user
+- products
+- wishlist
+- sales
 ## UI Testing
-completeed ?
+Completed
 - Consistency
-- Minimal Surprice
+- Minimal Suprise
 - Recoverability
 - Guidance and Feedback
-- Diff Users(Selleres, Buyer and Admin)
-- Diversity
+- Diff User UI
 - Clarity
+?
+- Diversity
 ## Requirements Testing
-
+- Wishlist
+- Cart
+- Product Description
+- Product Creation
 ## Calculations for Basis Path Test
-Completed
+Completed discount calculation
 ## Calculations for Equivalence Partition Test
-Completed
+Completed on user registration
 ## Validation Tests
+Completed on product creation 

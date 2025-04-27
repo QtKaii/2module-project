@@ -57,7 +57,7 @@ Error – "Description should have 10-100 characters."
 
 
 **Expected Result:**  
-Error – "Cannot sell items over 1100."
+Error – "Cannot sell items worth over 1100."
 
 ---
 
@@ -72,7 +72,7 @@ Error – "Cannot sell items over 1100."
 
 
 **Expected Result:**  
-Error – "Need pic"
+Error – "Need producr image to list product"
 
 ## Test Results
 
