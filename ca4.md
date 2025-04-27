@@ -19,7 +19,6 @@ Completed
 ## Requirements Testing
 - Wishlist
 - Cart
-- Product Description
 - Product Creation
 ## Calculations for Basis Path Test
 Completed discount calculation
