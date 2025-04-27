@@ -4,7 +4,7 @@ class wishlist {
     public $userId;
     public $productId;
 
-    public function __construct($userId = null, $productId = null) {
+    public function __construct($userId, $productId) {
         $this->userId = $userId;
         $this->productId = $productId;
     }

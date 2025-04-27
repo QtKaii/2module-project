@@ -1,10 +1,10 @@
 <?php
 
 class Sales {
-    public $salesId;
-    public $cost;
-    public $userId;
-    public $productId;
+    private $salesId;
+    private $cost;
+    private $userId;
+    private $productId;
 
     public function __construct($salesId = null, $cost = null, $userId = null, $productId = null) {
         $this->salesId = $salesId;
@@ -44,16 +44,4 @@ class Sales {
     public function setProductId($productId) {
         $this->productId = $productId;
     }
-
-    public function saveToDatabase($db) {
-        $stmt = $db->prepare("INSERT INTO sales (sales_id, cost, user_id, product_id) VALUES (?, ?, ?, ?)");
-        $stmt->bindValue(1, $this->salesId, SQLITE3_TEXT);
-        $stmt->bindValue(2, $this->cost, SQLITE3_TEXT);
-        $stmt->bindValue(3, $this->userId, SQLITE3_TEXT);
-        $stmt->bindValue(4, $this->productId, SQLITE3_TEXT);
-        return $stmt->execute();
-    }
 }
-
-
-?>
