@@ -61,7 +61,7 @@ Error – "Cannot sell items worth over 1100."
 
 ---
 
-### Test Case 5: No files
+### Test Case 5: No image file
 
 **Inputs:**
 - Product Name: `Sample product`
