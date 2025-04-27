@@ -50,7 +50,6 @@ Test common user journeys through the application:
 - [ ] **Login**: Log in with admin credentials
 - [ ] **User Management**: View, edit, and delete user accounts
 - [ ] **Product Management**: View, edit, and delete product listings
-- [ ] **Order Management**: View and manage orders
 
 ### 3. Role-Based UI Testing
 
