@@ -5,7 +5,7 @@ class commentDB
     private $db;
     public function __construct()
     {
-        $this->db = new SQLite3(__DIR__ . '/../db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+        $this->db = new PDO('sqlite:'. __DIR__ . '/../db.sqlite');
         $this->makeTable();
         $this->addInitialComments();
     }
@@ -14,7 +14,7 @@ class commentDB
     {
         // Check if comments exist first
         $result = $this->db->query("SELECT COUNT(*) as count FROM Comments");
-        $count = $result->fetchArray()['count'];
+        $count = $result->fetch(PDO::FETCH_ASSOC)['count'];
         
         if ($count === 0) {
             $initialComments = [
@@ -37,9 +37,9 @@ class commentDB
         $query =
             "INSERT INTO Comments (userID, productID, comment) VALUES (?, ?, ?)";
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(1, $comment->getuserID(), SQLITE3_INTEGER);
-        $stmt->bindValue(2, $comment->getproductID(), SQLITE3_INTEGER);
-        $stmt->bindValue(3, $comment->getcomment(), SQLITE3_TEXT);
+        $stmt->bindValue(1, $comment->getuserID(), PDO::PARAM_INT);
+        $stmt->bindValue(2, $comment->getproductID(), PDO::PARAM_INT);
+        $stmt->bindValue(3, $comment->getcomment(), PDO::PARAM_STR);
 
         $stmt->execute();
     }
@@ -53,15 +53,14 @@ class commentDB
             comment TEXT NOT NULL CHECK(length(comment) <= 250), 
             FOREIGN KEY (userID) REFERENCES Users(id), 
             FOREIGN KEY (productID) REFERENCES Products(id)
-        )
-    ";
+        )";
         try
         {
             $this->db->exec($query);
         }
-        catch (Exception $e)
+        catch (PDOException $e)
         {
-            error_log('probalbly an error with the cpmment beign too long?');
+            error_log('probalbly an error with the cpmment beign too long?' . $e->getMessage());
         }
     }
 
@@ -69,12 +68,12 @@ class commentDB
     {
         $query = "SELECT * FROM Comments WHERE productID = :productID";
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':productID', $productId, SQLITE3_INTEGER);
+        $stmt->bindValue(':productID', $productId, PDO::PARAM_INT);
         
         $result = $stmt->execute();
         $comments = [];
         
-        while ($row = $result->fetchArray(SQLITE3_ASSOC))
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
         {
             $comments[] = $row; 
         }
