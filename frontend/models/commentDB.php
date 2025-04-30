@@ -70,7 +70,7 @@ class commentDB
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':productID', $productId, PDO::PARAM_INT);
         
-        $result = $stmt->execute();
+        $stmt->execute();
         $comments = [];
         
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
