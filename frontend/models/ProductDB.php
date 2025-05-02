@@ -26,7 +26,7 @@ class ProductDB {
         // Check if products exist first
         $result = $this->db->query("SELECT COUNT(*) as count FROM Products");
         $count = $result->fetchArray()['count'];
-        
+
         if ($count === 0) {
             $initialProducts = [
                 [
@@ -68,7 +68,7 @@ class ProductDB {
     }
 
     public function createProduct($product) {
-        $query = "INSERT INTO Products (title, description, price, image, seller_id) 
+        $query = "INSERT INTO Products (title, description, price, image, seller_id)
                  VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($query);
 
@@ -86,7 +86,7 @@ class ProductDB {
         $query = "SELECT * FROM Products WHERE id = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
-        
+
         $result = $stmt->execute();
         return $result->fetchArray(SQLITE3_ASSOC);
     }
@@ -95,17 +95,17 @@ class ProductDB {
         $query = "SELECT * FROM Products";
         $result = $this->db->query($query);
         $products = [];
-        
+
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             $products[] = $row;
         }
-        
+
         return $products;
     }
 
     public function updateProduct($product) {
-        $query = "UPDATE Products 
-                 SET title = ?, description = ?, price = ?, image = ?, seller_id = ? 
+        $query = "UPDATE Products
+                 SET title = ?, description = ?, price = ?, image = ?, seller_id = ?
                  WHERE id = ?";
         $stmt = $this->db->prepare($query);
 
@@ -130,14 +130,14 @@ class ProductDB {
         $query = "SELECT * FROM Products WHERE seller_id = :seller_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':seller_id', $sellerId, SQLITE3_INTEGER);
-        
+
         $result = $stmt->execute();
         $products = [];
-        
+
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             $products[] = $row;
         }
-        
+
         return $products;
     }
 
@@ -145,22 +145,37 @@ class ProductDB {
         if (empty($ids)) {
             return [];
         }
-        
+
         $placeholders = str_repeat('?,', count($ids) - 1) . '?';
         $query = "SELECT * FROM Products WHERE id IN ($placeholders)";
         $stmt = $this->db->prepare($query);
-        
+
         foreach ($ids as $i => $id) {
             $stmt->bindValue($i + 1, $id, SQLITE3_INTEGER);
         }
-        
+
         $result = $stmt->execute();
         $products = [];
-        
+
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             $products[] = $row;
         }
-        
+
+        return $products;
+    }
+
+    public function searchProducts($searchTerm) {
+        $query = "SELECT * FROM Products WHERE title LIKE :search OR description LIKE :search";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':search', '%' . $searchTerm . '%', SQLITE3_TEXT);
+
+        $result = $stmt->execute();
+        $products = [];
+
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+            $products[] = $row;
+        }
+
         return $products;
     }
 }

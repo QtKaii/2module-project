@@ -306,10 +306,21 @@ try {
         case '/index':
             // render home page with product list from database
             $productDB = new ProductDB();
-            $products = $productDB->getAllProducts();
+
+            // Check if search query is provided
+            $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+            // Get products based on search query or get all products
+            if (!empty($searchQuery)) {
+                $products = $productDB->searchProducts($searchQuery);
+            } else {
+                $products = $productDB->getAllProducts();
+            }
+
             echo $twig->render('pages/index.html.twig', [
                 'current_page' => 'home',
-                'products' => $products
+                'products' => $products,
+                'searchQuery' => $searchQuery
             ]);
             break;
         case '/cart':

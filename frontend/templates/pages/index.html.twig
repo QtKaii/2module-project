@@ -4,10 +4,56 @@
 
 {% block content %}
 <section class="container mx-auto py-8 px-4">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {% for product in products %}
-            {% include 'components/product-card.html.twig' with {'product': product} %}
-        {% endfor %}
+    <!-- Search Bar -->
+    <div class="mb-8">
+        <form action="/" method="GET" class="flex flex-col sm:flex-row gap-2">
+            <input
+                type="text"
+                name="search"
+                placeholder="Search products..."
+                value="{{ searchQuery }}"
+                class="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+            <button
+                type="submit"
+                class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200"
+            >
+                Search
+            </button>
+            {% if searchQuery %}
+                <a
+                    href="/"
+                    class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-200 text-center"
+                >
+                    Clear
+                </a>
+            {% endif %}
+        </form>
     </div>
+
+    <!-- Search Results Count -->
+    {% if searchQuery %}
+        <div class="mb-4 text-gray-600">
+            Found {{ products|length }} result{% if products|length != 1 %}s{% endif %} for "{{ searchQuery }}"
+        </div>
+    {% endif %}
+
+    <!-- Product Grid -->
+    {% if products|length > 0 %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for product in products %}
+                {% include 'components/product-card.html.twig' with {'product': product} %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-8">
+            <p class="text-xl text-gray-600">No products found{% if searchQuery %} matching "{{ searchQuery }}"{% endif %}.</p>
+            {% if searchQuery %}
+                <a href="/" class="mt-4 inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
+                    View All Products
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
 </section>
 {% endblock %}
