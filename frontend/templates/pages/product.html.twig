@@ -6,10 +6,10 @@
 <div class="container mx-auto py-8 px-4">
     <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
         <div class="md:flex">
-        
+
             <div class="md:flex-shrink-0">
-                <img class="h-96 w-full object-contain md:w-96" 
-                     src="{{ product.image|default('https://placehold.co/400') }}" 
+                <img class="h-96 w-full object-contain md:w-96"
+                     src="{{ product.image|default('https://placehold.co/400') }}"
                      alt="{{ product.title }}">
             </div>
 
@@ -25,7 +25,7 @@
                         ${{ product.price }}
                     </span>
                 </div>
-                
+
                 <div class="flex gap-4 mb-4">
                     <form action="/cart/add" method="POST">
                         <input type="hidden" name="productId" value="{{ product.id }}">
@@ -44,6 +44,17 @@
                             'type': 'submit'
                         } %}
                     </form>
+
+                    {% if isProductSeller %}
+                    <form action="/update/product/edit" method="POST">
+                        <input type="hidden" name="edit" value="{{ product.id }}">
+                        {% include 'components/button.html.twig' with {
+                            'text': 'Edit Product',
+                            'style': 'secondary',
+                            'type': 'submit'
+                        } %}
+                    </form>
+                    {% endif %}
                 </div>
 
                 <a href="/" class="inline-block text-indigo-600 hover:text-indigo-500">
@@ -62,23 +73,23 @@
             <form action="/submit/comment" method="POST" class="space-y-4">
                 <div>
                     <label for="comment" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Your comment</label>
-                    <textarea 
-                        name="comment" 
+                    <textarea
+                        name="comment"
                         id="comment"
                         rows="4"
-                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm" 
+                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm"
                         placeholder="Share your thoughts about this product..."
                         required
                     ></textarea>
                     <input type="hidden" name="productID" value="{{ product.id }}">
                 </div>
-                
+
                 {% include 'components/button.html.twig' with {
                     'text': 'Post Comment',
                     'style': 'primary',
                     'type': 'submit',
                     'class': 'w-full sm:w-auto'
-                } %} 
+                } %}
             </form>
         </div>
     </div>
@@ -89,7 +100,7 @@
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Comments</h3>
                 <span class="text-sm text-gray-500 dark:text-gray-400">{{ comments|length }} comment(s)</span>
             </div>
-            
+
             {% if comments is empty %}
                 <div class="text-center py-6">
                     <p class="text-gray-500 dark:text-gray-400">No comments yet. Be the first to comment!</p>

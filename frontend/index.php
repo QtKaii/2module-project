@@ -59,19 +59,19 @@ try {
             $DATA=sanit($_POST);
             $state=false;
             //username 4–20 characters
-            if (strlen($DATA['username']) < 4 || strlen($DATA['username'])  > 20 ) 
+            if (strlen($DATA['username']) < 4 || strlen($DATA['username'])  > 20 )
             {
                 $usernameErr='username shpould be 4 to 20 characters';
                 $state=true;
             }
             //fullname only letters and spaces, 2–40 characters
-            if (!preg_match('/^[A-Za-z ]+$/', $DATA['name']) || strlen($DATA['name']) < 2 || strlen($DATA['name'])  > 40 ) 
+            if (!preg_match('/^[A-Za-z ]+$/', $DATA['name']) || strlen($DATA['name']) < 2 || strlen($DATA['name'])  > 40 )
             {
                 $fullnameErr='fullname only letters and spaces, 2 to 40 characters';
                 $state=true;
             }
             // password 6-30 characters
-            if (strlen($DATA['password']) < 6 || strlen($DATA['password'])  > 30) 
+            if (strlen($DATA['password']) < 6 || strlen($DATA['password'])  > 30)
             {
                 $passwordErr='password should be 6-30 characters';
                 //error_log($passwordErr);
@@ -101,7 +101,7 @@ try {
                 'password'=> $passwordErr ?? null,
                 'dob'=> $dobErr ?? null
             ];
-            
+
             if ($state==true)
             {
                 echo $twig->render('pages/registerErr.html.twig', [
@@ -111,8 +111,8 @@ try {
             }
             //make user obj then add to db
             else
-            {                
-                $user= new user($DATA);                    
+            {
+                $user= new user($DATA);
                 $userDB->makeUser($user);
                 header('Location: /login');
             }
@@ -466,6 +466,102 @@ try {
             }
             break;
 
+        case '/update/product/edit':
+            if (isset($_SESSION['user']) && ($_SESSION['user']['username'] == 'admin' || $_SESSION['user']['is_seller'] == 1)) {
+                $productId = $_POST['edit'];
+                $productDB = new ProductDB();
+                $product = $productDB->getProductById($productId);
+
+                if ($product) {
+                    echo $twig->render('pages/editProduct.html.twig', ['product' => $product]);
+                } else {
+                    header('Location: /error');
+                }
+            } else {
+                header('Location: /error');
+            }
+            break;
+
+        case '/update/product/save':
+            if (!isset($_SESSION['user']) || ($_SESSION['user']['username'] != 'admin' && $_SESSION['user']['is_seller'] != 1)) {
+                header('Location: /error');
+                break;
+            }
+
+            // Get the product ID from the form
+            $productId = $_POST['id'];
+            $productDB = new ProductDB();
+
+            // Get the existing product
+            $existingProduct = $productDB->getProductById($productId);
+            if (!$existingProduct) {
+                header('Location: /error');
+                break;
+            }
+
+            // Create a product object with the updated data
+            $product = new Product($_POST);
+            $product->setId($productId);
+
+            // Keep the existing image if no new one is uploaded
+            if (!isset($_FILES['image']) || $_FILES['image']['error'] != 0) {
+                $product->setImage($existingProduct['image']);
+            } else {
+                // Handle new image upload
+                $uploadDir = __DIR__ . '/uploads/';
+
+                // Create directory if it doesn't exist
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                // Generate a unique filename
+                $fileExtension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                $uniqueFilename = uniqid('product_') . '.' . $fileExtension;
+                $uploadPath = $uploadDir . $uniqueFilename;
+
+                // Move the uploaded file to the uploads directory
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+                    // Set the image path in the product object
+                    $product->setImage('/uploads/' . $uniqueFilename);
+                    error_log('Image uploaded successfully: ' . $uploadPath);
+                } else {
+                    error_log('Failed to upload image');
+                    $product->setImage($existingProduct['image']);
+                }
+            }
+
+            // Update the product in the database
+            $result = $productDB->updateProduct($product);
+
+            if ($result) {
+                // If admin, redirect to products admin page, otherwise redirect to product page
+                if ($_SESSION['user']['username'] == 'admin') {
+                    header('Location: /update/products');
+                } else {
+                    header('Location: /product/' . $productId);
+                }
+            } else {
+                header('Location: /error');
+            }
+            break;
+
+        case '/update/product/delete':
+            if (isset($_SESSION['user']) && ($_SESSION['user']['username'] == 'admin' || $_SESSION['user']['is_seller'] == 1)) {
+                $productId = $_POST['delete'];
+                $productDB = new ProductDB();
+                $result = $productDB->deleteProduct($productId);
+
+                if ($result) {
+                    header('Location: /update/products');
+                } else {
+                    header('Location: /error');
+                }
+            } else {
+                header('Location: /error');
+            }
+            break;
+
         case (preg_match('/^\/update\/product\/sales\/(\d+)$/', $path, $matches) ? true : false):
             if (isset($_SESSION['user']) && $_SESSION['user']['username'] == 'admin') {
                 // Get the product ID from the URL
@@ -605,16 +701,24 @@ try {
                        // $commentUserID=$comment[$userID];
                         //$comment['username']=$userDB->getUserNameByID($comment['userID']);
                         //error_log(print_r($comment));
-                        //$usernames[$userID] = $user['name']; 
+                        //$usernames[$userID] = $user['name'];
                         //$commentUserName=$userDB->getUserByID($indiComment.$userID);
                         //$commentUserID=$indiComment.$userID;
                     }
                     error_log(print_r($comments));
                     */
+                    // Check if the current user is the seller of this product
+                    $isProductSeller = false;
+                    if (isset($_SESSION['user'])) {
+                        $isProductSeller = ($_SESSION['user']['id'] == $product['seller_id']) ||
+                                          ($_SESSION['user']['username'] == 'admin');
+                    }
+
                     echo $twig->render('pages/product.html.twig', [
                         'product' => $product,
-                        'comments' => $comments
-                        /*tried to make two arrays of username and user id, in twig page use comment id to match to userid array, 
+                        'comments' => $comments,
+                        'isProductSeller' => $isProductSeller
+                        /*tried to make two arrays of username and user id, in twig page use comment id to match to userid array,
                         get index and find matching index in username to show name
                         then tried the simplier method of adding to the comments useing comment['username], didnt get to work
                         */

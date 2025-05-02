@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Product{% endblock %}
+
+{% block content %}
+<div class="py-8 md:py-16">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
+                <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Edit Product</h3>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Update product information</p>
+                </div>
+
+                <div class="p-6">
+                    <form method="post" action="/update/product/save" class="space-y-6" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="{{ product.id }}">
+                        {% if session.user %}
+                            <input type="hidden" name="seller_id" value="{{ product.seller_id }}">
+                        {% endif %}
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Product Name</label>
+                            <input type="text" name="title" id="name" required placeholder="Product Name" value="{{ product.title }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm"
+                            {% if err.title %}
+                                value = "{{ err.title }}"
+                            {% endif %}
+                            />
+                        </div>
+
+                        <div>
+                            <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                            <textarea id="description" name="description" rows="4" required placeholder="Product Description"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm">{{ product.description }}</textarea>
+                        </div>
+
+                        <div>
+                            <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Product Image</label>
+                            <div class="mt-1 flex items-center">
+                                {% if product.image %}
+                                    <div class="mb-3">
+                                        <img src="{{ product.image }}" alt="{{ product.title }}" class="h-32 w-32 object-contain">
+                                        <p class="text-xs text-gray-500 mt-1">Current image</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="mt-1">
+                                <input type="file" name="image" id="image"
+                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-gray-700 dark:file:text-gray-300" />
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Upload a new image (optional)</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="price" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Price</label>
+                            <div class="relative mt-1 rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                </div>
+                                <input type="number" name="price" id="price" required step="0.01" min="0" value="{{ product.price }}"
+                                    class="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm"
+                                    {% if err.price %}
+                                        placeholder = "{{ err.price }}"
+                                    {% endif %}
+                                    />
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+                            <a href="/product/{{ product.id }}" class="inline-flex justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
+                                Cancel
+                            </a>
+                            <button type="submit" class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                Update Product
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
