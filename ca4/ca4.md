@@ -14,7 +14,6 @@ Completed
 - Guidance and Feedback
 - Diff User UI
 - Clarity
-?
 - Diversity
 ## Requirements Testing
 - Wishlist
