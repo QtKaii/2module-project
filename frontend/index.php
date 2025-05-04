@@ -132,7 +132,8 @@ try {
             }
             else
             {
-                header('Location: /error');
+                echo $twig->render('pages/loginerr.html.twig');
+                //header('Location: /error');
             }
             break;
 
