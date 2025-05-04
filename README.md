@@ -15,6 +15,8 @@ I have worked in senior positions in companies, as well as the lead engineer in 
 ![alt text](image.png)
 The graph refers to the issues each member did on github not the actuall work. Something we were cautious throughout this project was the worksplit between the three members. This is because we didn't want Kai, our more experienced member to have an unfair amount of work to do. The programming was evenly split between the three of us(33% each). 
 
+To see detailed contribution by each member check the projects tab in Github. You can see who worked on what issue and when.
+
 ## Tools used
 - Twig
 - Tailwind
