@@ -32,7 +32,7 @@
                             <!-- Subtotal -->
                             <div class="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
                                 <span class="text-base font-medium text-gray-700 dark:text-gray-300">Subtotal</span>
-                                <span class="text-base font-medium text-gray-700 dark:text-gray-300">${{ subtotal | number_format(2) }}</span>
+                                <span class="text-base font-medium text-gray-700 dark:text-gray-300">€{{ subtotal | number_format(2) }}</span>
                             </div>
 
                             <!-- Spending Discount -->
@@ -41,14 +41,14 @@
                                 <span class="text-base font-medium text-gray-700 dark:text-gray-300">
                                     Spending Discount
                                     {% if subtotal >= 200 %}
-                                        (15% off orders over $200)
+                                        (15% off orders over €200)
                                     {% elseif subtotal >= 100 %}
-                                        (10% off orders over $100)
+                                        (10% off orders over €100)
                                     {% elseif subtotal >= 50 %}
-                                        (5% off orders over $50)
+                                        (5% off orders over €50)
                                     {% endif %}
                                 </span>
-                                <span class="text-base font-medium text-red-600 dark:text-red-400">-${{ spendingDiscount | number_format(2) }}</span>
+                                <span class="text-base font-medium text-red-600 dark:text-red-400">-€{{ spendingDiscount | number_format(2) }}</span>
                             </div>
                             {% endif %}
 
@@ -63,14 +63,14 @@
                                         (5% Youth Discount)
                                     {% endif %}
                                 </span>
-                                <span class="text-base font-medium text-red-600 dark:text-red-400">-${{ ageDiscount | number_format(2) }}</span>
+                                <span class="text-base font-medium text-red-600 dark:text-red-400">-€{{ ageDiscount | number_format(2) }}</span>
                             </div>
                             {% endif %}
 
                             <!-- Total -->
                             <div class="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mt-4 border-t-2 border-green-500">
                                 <span class="text-xl font-semibold text-gray-900 dark:text-white">Total</span>
-                                <span class="text-xl font-semibold text-green-600 dark:text-green-500">${{ total | number_format(2) }}</span>
+                                <span class="text-xl font-semibold text-green-600 dark:text-green-500">€{{ total | number_format(2) }}</span>
                             </div>
                         </div>
                     </div>

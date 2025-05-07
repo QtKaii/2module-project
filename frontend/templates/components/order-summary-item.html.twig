@@ -5,5 +5,5 @@
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ description }}</p>
         {% endif %}
     </div>
-    <span class="ml-4 text-lg text-gray-600 dark:text-gray-300">${{ price | number_format(2) }}</span>
+    <span class="ml-4 text-lg text-gray-600 dark:text-gray-300">€{{ price | number_format(2) }}</span>
 </div>

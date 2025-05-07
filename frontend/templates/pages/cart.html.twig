@@ -16,7 +16,7 @@
                         {% for item in cartItems %}
                             {% include 'components/cart-row.html.twig' with {
                                 'name': item.product.title,
-                                'price': '$' ~ item.product.price,
+                                'price': '€' ~ item.product.price,
                                 'id': item.product.id,
                                 'salesId': item.salesid
                             } %}
